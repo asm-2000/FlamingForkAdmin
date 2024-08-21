@@ -7,6 +7,9 @@
     <ScrollView>
         <VerticalStackLayout Padding="30" Spacing="25">
             <Label Text="Initialization" />
+            <Border>
+                <Entry Placeholder="Enter your name" />
+            </Border>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
