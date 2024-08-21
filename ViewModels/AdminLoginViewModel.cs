@@ -1,5 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using FlamingForkAdmin.Helper.Utilities;
+using FlamingForkAdmin.Models;
+using FlamingForkAdmin.Repositories.Implementations;
 
 namespace FlamingForkAdmin.ViewModels
 {
@@ -49,24 +52,24 @@ namespace FlamingForkAdmin.ViewModels
         [RelayCommand]
         public void ValidateEmail()
         {
-            EmailError = Validation.EmailValidator(Email);
+            EmailError = ValidationService.EmailValidator(Email);
         }
 
         [RelayCommand]
         public void ValidatePassword()
         {
-            PasswordError = Validation.PasswordValidator(Password);
+            PasswordError = ValidationService.PasswordValidator(Password);
         }
 
         [RelayCommand]
         public async Task ValidateForm()
         {
-            _FormValidity = string.IsNullOrEmpty(EmailError = Validation.EmailValidator(Email)) && string.IsNullOrEmpty(PasswordError = Validation.PasswordValidator(Password));
+            _FormValidity = string.IsNullOrEmpty(EmailError = ValidationService.EmailValidator(Email)) && string.IsNullOrEmpty(PasswordError = ValidationService.PasswordValidator(Password));
             if (_FormValidity)
             {
                 IsSigningIn = true;
-                CustomerLoginModel customerCredentials = new CustomerLoginModel(Email, Password);
-                SignInMessage = await _AuthService.LoginCustomer(customerCredentials);
+                AdminModel adminCredentials = new AdminModel(Email, Password);
+                SignInMessage = await _AuthService.LoginCustomer(adminCredentials);
                 string token = await SecureStorageHandler.GetAuthenticationToken();
                 IsSigningIn = false;
                 if (token != "Not Found")

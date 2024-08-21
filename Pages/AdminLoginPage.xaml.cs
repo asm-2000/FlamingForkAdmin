@@ -7,6 +7,6 @@ public partial class AdminLoginPage : ContentPage
 	public AdminLoginPage()
 	{
 		InitializeComponent();
-		BindingContext = new AdminLoginViewModel();
+		BindingContext = new AdminLoginViewModel(Navigation);
 	}
 }

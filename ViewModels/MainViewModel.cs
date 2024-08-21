@@ -1,4 +1,5 @@
-﻿using FlamingForkAdmin.Pages;
+﻿using FlamingForkAdmin.Helper.Utilities;
+using FlamingForkAdmin.Pages;
 
 namespace FlamingForkAdmin.ViewModels
 {
@@ -13,7 +14,11 @@ namespace FlamingForkAdmin.ViewModels
 
         public async Task CheckLoginStatus()
         {
-            await _Navigation.PushModalAsync(new AdminLoginPage());
+            string? token = await SecureStorageHandler.GetAuthenticationToken();
+            if(token == "Not Found")
+            {
+                await _Navigation.PushModalAsync(new AdminLoginPage());
+            }
         }
     }
 }
