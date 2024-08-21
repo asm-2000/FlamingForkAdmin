@@ -20,6 +20,7 @@ namespace FlamingForkAdmin.Repositories.Implementations
 
         public async Task<string> LoginCustomer(AdminModel adminCredentials)
         {
+            TokenResponseModel? authTokenResponse = new TokenResponseModel(); 
             ApiResponseMessageModel? loginErrorResponse = new();
             var options = new JsonSerializerOptions
             {
@@ -34,12 +35,12 @@ namespace FlamingForkAdmin.Repositories.Implementations
                 var uri = new Uri("http://" + _Address + "/user/loginAdmin");
                 var response = await _HttpClient.PostAsync(uri, content);
 
-                // Tries to deserialize the response to LoginResponseModel in case of sucessful login.
+                // Tries to deserialize the response to TokenResponseModel in case of sucessful login.
                 if (response.IsSuccessStatusCode)
                 {
                     string responseBody = await response.Content.ReadAsStringAsync();
-                    string? token = JsonSerializer.Deserialize<string>(responseBody, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                    await SecureStorageHandler.StoreAuthenticationToken(token);
+                    authTokenResponse = JsonSerializer.Deserialize<TokenResponseModel>(responseBody, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    await SecureStorageHandler.StoreAuthenticationToken(authTokenResponse.AuthenticationToken);
                     return "Sign In successful!";
                 }
                 // Deserializes the response to ApiResponseMessageModel in case of error status.
