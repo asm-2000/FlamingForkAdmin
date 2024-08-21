@@ -65,11 +65,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Models\" />
 	  <Folder Include="Repositories\Interfaces\" />
 	  <Folder Include="Repositories\Implementations\" />
-	  <Folder Include="ViewModels\" />
-	  <Folder Include="Pages\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="Pages\AdminLoginPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 </Project>

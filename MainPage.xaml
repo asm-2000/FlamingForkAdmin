@@ -3,6 +3,8 @@
     x:Class="FlamingForkAdmin.MainPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewmodel="clr-namespace:FlamingForkAdmin.ViewModels"
+    x:DataType="viewmodel:MainViewModel"
     Shell.NavBarIsVisible="False">
     <ScrollView>
         <VerticalStackLayout Padding="30" Spacing="25">
