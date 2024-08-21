@@ -2,8 +2,11 @@
 <ContentPage
     x:Class="FlamingForkAdmin.MainPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Shell.NavBarIsVisible="False">
     <ScrollView>
-        <VerticalStackLayout Padding="30,0" Spacing="25" />
+        <VerticalStackLayout Padding="30" Spacing="25">
+            <Label Text="Initialization" />
+        </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
