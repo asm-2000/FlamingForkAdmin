@@ -10,6 +10,10 @@
             <Border>
                 <Entry Placeholder="Enter your name" />
             </Border>
+            <Label
+                HeightRequest="50"
+                Text="THis is a demo text to observe the resizable property."
+                WidthRequest="400" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
