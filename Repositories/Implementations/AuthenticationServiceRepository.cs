@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text;
 using FlamingForkAdmin.Models;
+using FlamingForkAdmin.Helper.Utilities;
 
 namespace FlamingForkAdmin.Repositories.Implementations
 {
@@ -12,7 +13,7 @@ namespace FlamingForkAdmin.Repositories.Implementations
         public AuthenticationServiceRepository()
         {
             _HttpClient = new HttpClient();
-            _Address = "localhost";
+            _Address = "localhost:8080";
         }
 
         #region Login Handler API Service
