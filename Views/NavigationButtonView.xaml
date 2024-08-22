@@ -7,10 +7,9 @@
     <VerticalStackLayout BindingContext="{x:Reference This}">
         <Border
             Padding="10,15"
-            BackgroundColor="{AppThemeBinding Light={StaticResource Transparent},
+            BackgroundColor="{AppThemeBinding Light={StaticResource Gray50},
                                               Dark={StaticResource Black}}"
-            Stroke="{AppThemeBinding Light={StaticResource Gray400},
-                                     Dark={StaticResource Transparent}}"
+            Stroke="{StaticResource Transparent}"
             StrokeShape="RoundRectangle 20">
             <Grid ColumnDefinitions="0.2*,0.8*">
                 <Grid.GestureRecognizers>

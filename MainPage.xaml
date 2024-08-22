@@ -60,7 +60,7 @@
                     Padding="50,30"
                     BackgroundColor="{AppThemeBinding Light={StaticResource Transparent},
                                                       Dark={StaticResource DeepGray}}"
-                    Stroke="{AppThemeBinding Light={StaticResource Gray500},
+                    Stroke="{AppThemeBinding Light={StaticResource Gray100},
                                              Dark={StaticResource Transparent}}"
                     StrokeShape="RoundRectangle 20">
 
@@ -75,17 +75,44 @@
                         <Label
                             Margin="20,0"
                             FontAttributes="Bold"
-                            FontSize="20"
+                            FontSize="24"
                             Text="Orders:"
                             TextColor="{AppThemeBinding Light={StaticResource Gray500},
                                                         Dark={StaticResource Gray400}}" />
-                        <VerticalStackLayout Margin="20,0" Spacing="10">
+                        <VerticalStackLayout Margin="20,0" Spacing="20">
                             <view:NavigationButtonView
                                 ImageSource="order_logo.png"
                                 NavigateButtonPressed="{Binding NavigateToReceivedOrdersPageCommand}"
                                 OrderType="Received Orders" />
+                            <view:NavigationButtonView
+                                ImageSource="order_being_prepared_icon.png"
+                                NavigateButtonPressed="{Binding NavigateToBeingPreparedOrdersPageCommand}"
+                                OrderType="Being Prepared" />
+                            <view:NavigationButtonView
+                                ImageSource="order_being_delivered_icon.png"
+                                NavigateButtonPressed="{Binding NavigateToBeingDeliveredOrdersPageCommand}"
+                                OrderType="Received Orders" />
+                            <view:NavigationButtonView
+                                ImageSource="order_delivered_icon.png"
+                                NavigateButtonPressed="{Binding NavigateToDeliveredOrdersPageCommand}"
+                                OrderType="Received Orders" />
+                            <view:NavigationButtonView
+                                ImageSource="order_cancelled_icon.png"
+                                NavigateButtonPressed="{Binding NavigateToCancelledOrdersPageCommand}"
+                                OrderType="Received Orders" />
                         </VerticalStackLayout>
-                        <VerticalStackLayout Margin="20,0" />
+                        <Label
+                            Margin="20,0"
+                            FontAttributes="Bold"
+                            FontSize="24"
+                            Text="Menu:"
+                            TextColor="{AppThemeBinding Light={StaticResource Gray500},
+                                                        Dark={StaticResource Gray400}}" />
+                        <view:NavigationButtonView
+                            Margin="20,0"
+                            ImageSource="menu_icon.png"
+                            NavigateButtonPressed="{Binding NavigateToMenuPageCommand}"
+                            OrderType="My Menu" />
                     </VerticalStackLayout>
                 </Border>
                 <!--#endregion-->
@@ -95,10 +122,12 @@
                     Padding="50,30"
                     BackgroundColor="{AppThemeBinding Light={StaticResource Transparent},
                                                       Dark={StaticResource DeepGray}}"
-                    Stroke="{AppThemeBinding Light={StaticResource Gray500},
+                    Stroke="{AppThemeBinding Light={StaticResource Gray100},
                                              Dark={StaticResource Transparent}}"
                     StrokeShape="RoundRectangle 20">
-                    <ScrollView Orientation="Vertical" />
+                    <ScrollView Orientation="Vertical">
+                        <Label Text="Demo text" />
+                    </ScrollView>
                 </Border>
                 <!--#endregion-->
             </Grid>
