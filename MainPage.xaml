@@ -7,15 +7,109 @@
     x:DataType="viewmodel:MainViewModel"
     Shell.NavBarIsVisible="False">
     <ScrollView>
-        <VerticalStackLayout Padding="30" Spacing="25">
-            <Label Text="Initialization" />
-            <Border>
-                <Entry Placeholder="Enter your name" />
-            </Border>
-            <Label
-                HeightRequest="50"
-                Text="THis is a demo text to observe the resizable property."
-                WidthRequest="400" />
+        <VerticalStackLayout Padding="100,30" Spacing="20">
+            <FlexLayout
+                Direction="Row"
+                FlowDirection="LeftToRight"
+                JustifyContent="SpaceBetween">
+                <HorizontalStackLayout Spacing="20">
+                    <Image
+                        HeightRequest="60"
+                        Source="sign_in.png"
+                        WidthRequest="60" />
+                    <Label
+                        FontAttributes="Bold"
+                        FontFamily="PoppinsRegular"
+                        FontSize="30"
+                        Text="Flamin' Fork"
+                        VerticalOptions="Center" />
+                </HorizontalStackLayout>
+                <Border
+                    Margin="2"
+                    Padding="10"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource Transparent},
+                                                      Dark={StaticResource DeepGray}}"
+                    HeightRequest="70"
+                    HorizontalOptions="End"
+                    Stroke="{AppThemeBinding Light={StaticResource Gray500},
+                                             Dark={StaticResource Transparent}}"
+                    StrokeShape="RoundRectangle 20"
+                    WidthRequest="80">
+                    <ImageButton
+                        BackgroundColor="{StaticResource Transparent}"
+                        Command="{Binding ToggleDisplayModeCommand}"
+                        HeightRequest="20"
+                        Source="{Binding DisplayModeButtonSource}"
+                        WidthRequest="20" />
+                </Border>
+            </FlexLayout>
+            <Grid ColumnDefinitions="0.3*,0.7*">
+                <Border
+                    Grid.Column="0"
+                    Padding="50,30"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource Transparent},
+                                                      Dark={StaticResource DeepGray}}"
+                    Stroke="{AppThemeBinding Light={StaticResource Gray500},
+                                             Dark={StaticResource Transparent}}"
+                    StrokeShape="RoundRectangle 20">
+
+                    <VerticalStackLayout Spacing="10">
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="24"
+                            Text="Navigate to:"
+                            TextColor="{AppThemeBinding Light={StaticResource Primary},
+                                                        Dark={StaticResource PrimaryDarkText}}" />
+                        <Label
+                            Margin="20,0"
+                            FontAttributes="Bold"
+                            FontSize="20"
+                            Text="Orders:"
+                            TextColor="{AppThemeBinding Light={StaticResource Gray500},
+                                                        Dark={StaticResource Gray400}}" />
+                        <BoxView
+                            Margin="20,0"
+                            BackgroundColor="{StaticResource Gray400}"
+                            HeightRequest="2" />
+                        <VerticalStackLayout Margin="20,0">
+                            <Border
+                                Padding="10"
+                                BackgroundColor="{AppThemeBinding Light={StaticResource Transparent},
+                                                                  Dark={StaticResource Black}}"
+                                StrokeShape="RoundRectangle 20">
+                                <Grid ColumnDefinitions="0.3*,0.7*">
+                                    <Grid.GestureRecognizers>
+                                        <TapGestureRecognizer />
+                                    </Grid.GestureRecognizers>
+                                    <!--  Image  -->
+                                    <Image
+                                        Grid.Column="0"
+                                        HeightRequest="30"
+                                        Source="order_logo.png"
+                                        VerticalOptions="Center"
+                                        WidthRequest="30" />
+
+                                    <!--  Text  -->
+                                    <Label
+                                        Grid.Column="1"
+                                        Margin="10,0,0,0"
+                                        HorizontalOptions="Start"
+                                        HorizontalTextAlignment="Center"
+                                        Text="Received Orders"
+                                        TextColor="{AppThemeBinding Light={StaticResource Primary},
+                                                                    Dark={StaticResource PrimaryDarkText}}"
+                                        VerticalOptions="Center" />
+                                </Grid>
+                            </Border>
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Margin="20,0" />
+                    </VerticalStackLayout>
+                </Border>
+            </Grid>
+            <Button
+                Command="{Binding LogOutAdminCommand}"
+                Text="Log Out"
+                WidthRequest="200" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
