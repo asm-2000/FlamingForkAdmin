@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using FlamingForkAdmin.Helper.Utilities;
 using FlamingForkAdmin.Pages;
+using System.Diagnostics;
 
 namespace FlamingForkAdmin.ViewModels
 {
@@ -43,6 +44,13 @@ namespace FlamingForkAdmin.ViewModels
         {
             Application.Current.UserAppTheme = Application.Current.UserAppTheme == AppTheme.Light ? AppTheme.Dark : AppTheme.Light;
             DisplayModeButtonSource = Application.Current.UserAppTheme == AppTheme.Light ? "dark_mode_icon.png" : "light_mode_icon.png";
+        }
+
+        [RelayCommand]
+        public async Task NavigateToReceivedOrdersPage()
+        {
+            Debug.WriteLine("called");
+            await _Navigation.PushAsync(new ReceivedOrdersPage());
         }
 
         [RelayCommand]

@@ -3,12 +3,15 @@
     x:Class="FlamingForkAdmin.MainPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:view="clr-namespace:FlamingForkAdmin.Views"
     xmlns:viewmodel="clr-namespace:FlamingForkAdmin.ViewModels"
     x:DataType="viewmodel:MainViewModel"
     Shell.NavBarIsVisible="False">
     <ScrollView>
-        <VerticalStackLayout Padding="100,30" Spacing="20">
+        <VerticalStackLayout Padding="100,60">
+            <!--#region Title Box-->
             <FlexLayout
+                Margin="0,0,0,20"
                 Direction="Row"
                 FlowDirection="LeftToRight"
                 JustifyContent="SpaceBetween">
@@ -43,7 +46,15 @@
                         WidthRequest="20" />
                 </Border>
             </FlexLayout>
-            <Grid ColumnDefinitions="0.3*,0.7*">
+            <BoxView
+                Margin="0,0,0,40"
+                BackgroundColor="{AppThemeBinding Light={StaticResource PrimaryDark},
+                                                  Dark={StaticResource Gold}}"
+                HeightRequest="2" />
+            <!--#endregion-->
+            <!--#region MainPage Body-->
+            <Grid ColumnDefinitions="0.3*,0.7*" ColumnSpacing="50">
+                <!--#region Navigator-->
                 <Border
                     Grid.Column="0"
                     Padding="50,30"
@@ -56,8 +67,9 @@
                     <VerticalStackLayout Spacing="10">
                         <Label
                             FontAttributes="Bold"
-                            FontSize="24"
-                            Text="Navigate to:"
+                            FontSize="34"
+                            HorizontalTextAlignment="Start"
+                            Text="Navigate"
                             TextColor="{AppThemeBinding Light={StaticResource Primary},
                                                         Dark={StaticResource PrimaryDarkText}}" />
                         <Label
@@ -67,45 +79,30 @@
                             Text="Orders:"
                             TextColor="{AppThemeBinding Light={StaticResource Gray500},
                                                         Dark={StaticResource Gray400}}" />
-                        <BoxView
-                            Margin="20,0"
-                            BackgroundColor="{StaticResource Gray400}"
-                            HeightRequest="2" />
-                        <VerticalStackLayout Margin="20,0">
-                            <Border
-                                Padding="10"
-                                BackgroundColor="{AppThemeBinding Light={StaticResource Transparent},
-                                                                  Dark={StaticResource Black}}"
-                                StrokeShape="RoundRectangle 20">
-                                <Grid ColumnDefinitions="0.3*,0.7*">
-                                    <Grid.GestureRecognizers>
-                                        <TapGestureRecognizer />
-                                    </Grid.GestureRecognizers>
-                                    <!--  Image  -->
-                                    <Image
-                                        Grid.Column="0"
-                                        HeightRequest="30"
-                                        Source="order_logo.png"
-                                        VerticalOptions="Center"
-                                        WidthRequest="30" />
-
-                                    <!--  Text  -->
-                                    <Label
-                                        Grid.Column="1"
-                                        Margin="10,0,0,0"
-                                        HorizontalOptions="Start"
-                                        HorizontalTextAlignment="Center"
-                                        Text="Received Orders"
-                                        TextColor="{AppThemeBinding Light={StaticResource Primary},
-                                                                    Dark={StaticResource PrimaryDarkText}}"
-                                        VerticalOptions="Center" />
-                                </Grid>
-                            </Border>
+                        <VerticalStackLayout Margin="20,0" Spacing="10">
+                            <view:NavigationButtonView
+                                ImageSource="order_logo.png"
+                                NavigateButtonPressed="{Binding NavigateToReceivedOrdersPageCommand}"
+                                OrderType="Received Orders" />
                         </VerticalStackLayout>
                         <VerticalStackLayout Margin="20,0" />
                     </VerticalStackLayout>
                 </Border>
+                <!--#endregion-->
+                <!--#region All Orders-->
+                <Border
+                    Grid.Column="1"
+                    Padding="50,30"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource Transparent},
+                                                      Dark={StaticResource DeepGray}}"
+                    Stroke="{AppThemeBinding Light={StaticResource Gray500},
+                                             Dark={StaticResource Transparent}}"
+                    StrokeShape="RoundRectangle 20">
+                    <ScrollView Orientation="Vertical" />
+                </Border>
+                <!--#endregion-->
             </Grid>
+            <!--#endregion-->
             <Button
                 Command="{Binding LogOutAdminCommand}"
                 Text="Log Out"
