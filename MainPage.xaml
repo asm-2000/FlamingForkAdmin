@@ -119,14 +119,20 @@
                 <!--#region All Orders-->
                 <Border
                     Grid.Column="1"
-                    Padding="50,30"
+                    Padding="30"
                     BackgroundColor="{AppThemeBinding Light={StaticResource Transparent},
                                                       Dark={StaticResource DeepGray}}"
                     Stroke="{AppThemeBinding Light={StaticResource Gray100},
                                              Dark={StaticResource Transparent}}"
                     StrokeShape="RoundRectangle 20">
                     <ScrollView Orientation="Vertical">
-                        <Label Text="Demo text" />
+                        <view:OrderView
+                            CustomerAddress="Kathmandu"
+                            OrderDate="2024/07/23 12:23"
+                            OrderId="12"
+                            OrderStatus="Being Delivered"
+                            StringifiedItems="momo(2)"
+                            TotalPrice="450" />
                     </ScrollView>
                 </Border>
                 <!--#endregion-->
