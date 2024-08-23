@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.Input;
 using FlamingForkAdmin.Helper.Utilities;
 using FlamingForkAdmin.Pages;
-using System.Diagnostics;
 
 namespace FlamingForkAdmin.ViewModels
 {
@@ -49,8 +48,37 @@ namespace FlamingForkAdmin.ViewModels
         [RelayCommand]
         public async Task NavigateToReceivedOrdersPage()
         {
-            Debug.WriteLine("called");
             await _Navigation.PushAsync(new ReceivedOrdersPage());
+        }
+
+        [RelayCommand]
+        public async Task NavigateToBeingPreparedOrdersPage()
+        {
+            await _Navigation.PushAsync(new BeingPreparedOrdersPage());
+        }
+
+        [RelayCommand]
+        public async Task NavigateToBeingDeliveredOrdersPage()
+        {
+            await _Navigation.PushAsync(new BeingDeliveredOrdersPage());
+        }
+
+        [RelayCommand]
+        public async Task NavigateToDeliveredOrdersPage()
+        {
+            await _Navigation.PushAsync(new DeliveredOrdersPage());
+        }
+
+        [RelayCommand]
+        public async Task NavigateToCancelledOrdersPage()
+        {
+            await _Navigation.PushAsync(new CancelledOrdersPage());
+        }
+
+        [RelayCommand]
+        public async Task NavigateToMenuPage()
+        {
+            await _Navigation.PushAsync(new MenuPage());
         }
 
         [RelayCommand]
