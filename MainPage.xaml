@@ -3,6 +3,7 @@
     x:Class="FlamingForkAdmin.MainPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:model="clr-namespace:FlamingForkAdmin.Models"
     xmlns:view="clr-namespace:FlamingForkAdmin.Views"
     xmlns:viewmodel="clr-namespace:FlamingForkAdmin.ViewModels"
     x:DataType="viewmodel:MainViewModel"
@@ -125,14 +126,20 @@
                     Stroke="{AppThemeBinding Light={StaticResource Gray100},
                                              Dark={StaticResource Transparent}}"
                     StrokeShape="RoundRectangle 20">
-                    <ScrollView Orientation="Vertical">
-                        <view:OrderView
-                            CustomerAddress="Kathmandu"
-                            OrderDate="2024/07/23 12:23"
-                            OrderId="12"
-                            OrderStatus="Being Delivered"
-                            StringifiedItems="momo(2)"
-                            TotalPrice="450" />
+                    <ScrollView HeightRequest="684" Orientation="Vertical">
+                        <CollectionView ItemsLayout="VerticalGrid,2" ItemsSource="{Binding AllOrders}">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="model:OrderModel">
+                                    <view:OrderView
+                                        CustomerAddress="{Binding CustomerAddress}"
+                                        OrderDate="{Binding OrderDate}"
+                                        OrderId="{Binding OrderId}"
+                                        OrderStatus="{Binding OrderStatus}"
+                                        StringifiedItems="momo(2)"
+                                        TotalPrice="{Binding TotalPrice}" />
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
                     </ScrollView>
                 </Border>
                 <!--#endregion-->

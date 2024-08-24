@@ -102,7 +102,7 @@
                         VerticalTextAlignment="Center" />
                     <Picker
                         Grid.Column="1"
-                        BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}}"
+                        BackgroundColor="{AppThemeBinding Light={StaticResource White}}"
                         SelectedItem="{Binding OrderStatus}"
                         TextColor="{AppThemeBinding Light={StaticResource Gray400},
                                                     Dark={StaticResource Gray200}}">

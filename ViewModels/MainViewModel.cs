@@ -1,7 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FlamingForkAdmin.Helper.Utilities;
+using FlamingForkAdmin.Models;
 using FlamingForkAdmin.Pages;
+using FlamingForkAdmin.Repositories.Implementations;
 
 namespace FlamingForkAdmin.ViewModels
 {
@@ -10,9 +12,13 @@ namespace FlamingForkAdmin.ViewModels
         #region Properties
 
         [ObservableProperty]
+        private List<OrderModel> _AllOrders;
+
+        [ObservableProperty]
         private string _DisplayModeButtonSource;
 
         private INavigation _Navigation;
+        private OrderServiceRepository _OrderService;
 
         #endregion Properties
 
@@ -22,7 +28,9 @@ namespace FlamingForkAdmin.ViewModels
         {
             DisplayModeButtonSource = Application.Current.UserAppTheme == AppTheme.Light ? "dark_mode_icon.png" : "light_mode_icon.png";
             _Navigation = navigation;
+            _OrderService = new OrderServiceRepository();
             CheckLoginStatus();
+            FetchAllOrders();
         }
 
         #endregion Constructor
@@ -36,6 +44,12 @@ namespace FlamingForkAdmin.ViewModels
             {
                 await _Navigation.PushModalAsync(new AdminLoginPage());
             }
+        }
+
+        [RelayCommand]
+        public async Task FetchAllOrders()
+        {
+            AllOrders = await _OrderService.GetAllOrders();
         }
 
         [RelayCommand]
