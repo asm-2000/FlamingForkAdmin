@@ -9,7 +9,12 @@
     x:DataType="viewmodel:MainViewModel"
     Shell.NavBarIsVisible="False">
     <ScrollView>
-        <VerticalStackLayout Padding="100,60">
+        <VerticalStackLayout Padding="100,50">
+            <ActivityIndicator
+                HeightRequest="20"
+                IsRunning="{Binding IsFetching}"
+                IsVisible="{Binding IsFetching}"
+                Color="{StaticResource Gray100}" />
             <!--#region Title Box-->
             <FlexLayout
                 Margin="0,0,0,20"
@@ -28,24 +33,44 @@
                         Text="Flamin' Fork"
                         VerticalOptions="Center" />
                 </HorizontalStackLayout>
-                <Border
-                    Margin="2"
-                    Padding="10"
-                    BackgroundColor="{AppThemeBinding Light={StaticResource Transparent},
-                                                      Dark={StaticResource DeepGray}}"
-                    HeightRequest="70"
-                    HorizontalOptions="End"
-                    Stroke="{AppThemeBinding Light={StaticResource Gray500},
-                                             Dark={StaticResource Transparent}}"
-                    StrokeShape="RoundRectangle 20"
-                    WidthRequest="80">
-                    <ImageButton
-                        BackgroundColor="{StaticResource Transparent}"
-                        Command="{Binding ToggleDisplayModeCommand}"
-                        HeightRequest="20"
-                        Source="{Binding DisplayModeButtonSource}"
-                        WidthRequest="20" />
-                </Border>
+                <HorizontalStackLayout Spacing="10">
+                    <Border
+                        Margin="2"
+                        Padding="10"
+                        BackgroundColor="{AppThemeBinding Light={StaticResource Transparent},
+                                                          Dark={StaticResource DeepGray}}"
+                        HeightRequest="70"
+                        HorizontalOptions="End"
+                        Stroke="{AppThemeBinding Light={StaticResource Gray500},
+                                                 Dark={StaticResource Transparent}}"
+                        StrokeShape="RoundRectangle 20"
+                        WidthRequest="80">
+                        <ImageButton
+                            BackgroundColor="{StaticResource Transparent}"
+                            Command="{Binding FetchAllOrdersCommand}"
+                            HeightRequest="20"
+                            Source="refresh_icon.png"
+                            WidthRequest="20" />
+                    </Border>
+                    <Border
+                        Margin="2"
+                        Padding="10"
+                        BackgroundColor="{AppThemeBinding Light={StaticResource Transparent},
+                                                          Dark={StaticResource DeepGray}}"
+                        HeightRequest="70"
+                        HorizontalOptions="End"
+                        Stroke="{AppThemeBinding Light={StaticResource Gray500},
+                                                 Dark={StaticResource Transparent}}"
+                        StrokeShape="RoundRectangle 20"
+                        WidthRequest="80">
+                        <ImageButton
+                            BackgroundColor="{StaticResource Transparent}"
+                            Command="{Binding ToggleDisplayModeCommand}"
+                            HeightRequest="20"
+                            Source="{Binding DisplayModeButtonSource}"
+                            WidthRequest="20" />
+                    </Border>
+                </HorizontalStackLayout>
             </FlexLayout>
             <BoxView
                 Margin="0,0,0,40"
@@ -127,19 +152,32 @@
                                              Dark={StaticResource Transparent}}"
                     StrokeShape="RoundRectangle 20">
                     <ScrollView HeightRequest="684" Orientation="Vertical">
-                        <CollectionView ItemsLayout="VerticalGrid,2" ItemsSource="{Binding AllOrders}">
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate x:DataType="model:OrderModel">
-                                    <view:OrderView
-                                        CustomerAddress="{Binding CustomerAddress}"
-                                        OrderDate="{Binding OrderDate}"
-                                        OrderId="{Binding OrderId}"
-                                        OrderStatus="{Binding OrderStatus}"
-                                        StringifiedItems="momo(2)"
-                                        TotalPrice="{Binding TotalPrice}" />
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
+                        <VerticalStackLayout>
+                            <VerticalStackLayout
+                                Margin="0,180"
+                                HorizontalOptions="Center"
+                                IsVisible="{Binding NoOrdersPresent}"
+                                Spacing="30">
+                                <Image HeightRequest="200" Source="no_orders_icon.png" />
+                                <Label
+                                    FontSize="35"
+                                    Text="No Orders To show!"
+                                    TextColor="{StaticResource Gray300}" />
+                            </VerticalStackLayout>
+                            <CollectionView ItemsLayout="VerticalGrid, 2" ItemsSource="{Binding AllOrders}">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="model:OrderModel">
+                                        <view:OrderView
+                                            CustomerAddress="{Binding CustomerAddress}"
+                                            OrderDate="{Binding OrderDate}"
+                                            OrderId="{Binding OrderId}"
+                                            OrderStatus="{Binding OrderStatus}"
+                                            StringifiedItems="momo(2)"
+                                            TotalPrice="{Binding TotalPrice}" />
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </VerticalStackLayout>
                     </ScrollView>
                 </Border>
                 <!--#endregion-->
