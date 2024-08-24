@@ -171,8 +171,8 @@
                                             CustomerAddress="{Binding CustomerAddress}"
                                             OrderDate="{Binding OrderDate}"
                                             OrderId="{Binding OrderId}"
+                                            OrderItems="{Binding OrderItems}"
                                             OrderStatus="{Binding OrderStatus}"
-                                            StringifiedItems="momo(2)"
                                             TotalPrice="{Binding TotalPrice}" />
                                     </DataTemplate>
                                 </CollectionView.ItemTemplate>

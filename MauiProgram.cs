@@ -1,4 +1,6 @@
 ﻿using CommunityToolkit.Maui;
+using FlamingForkAdmin.Pages;
+using FlamingForkAdmin.ViewModels;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.LifecycleEvents;
 
@@ -46,6 +48,19 @@ namespace FlamingForkAdmin
                 });
             });
 #endif
+            builder.Services.AddSingleton<MainPage>();
+            builder.Services.AddSingleton<MainViewModel>();
+            builder.Services.AddSingleton<AdminLoginPage>();
+            builder.Services.AddSingleton<AdminLoginViewModel>();
+            builder.Services.AddSingleton<ReceivedOrdersPage>();
+            builder.Services.AddSingleton<ReceivedOrdersViewModel>();
+            builder.Services.AddSingleton<BeingPreparedOrdersPage>();
+            builder.Services.AddSingleton<BeingPreparedOrdersViewModel>();
+            builder.Services.AddSingleton<BeingDeliveredOrdersPage>();
+            builder.Services.AddSingleton<BeingDeliveredOrdersViewModel>();
+            builder.Services.AddSingleton<CancelledOrdersPage>();
+            builder.Services.AddSingleton<CancelledOrdersViewModel>();
+
             return builder.Build();
         }
     }

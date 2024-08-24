@@ -1,4 +1,5 @@
 using CommunityToolkit.Mvvm.Input;
+using FlamingForkAdmin.Models;
 
 namespace FlamingForkAdmin.Views;
 
@@ -45,13 +46,13 @@ public partial class OrderView : ContentView
         set => SetValue(OrderDateProperty, value);
     }
 
-    public static readonly BindableProperty StringifiedItemsProperty =
-        BindableProperty.Create(nameof(StringifiedItems), typeof(string), typeof(OrderView), default(string));
+    public static readonly BindableProperty OrderItemsProperty =
+        BindableProperty.Create(nameof(OrderItems), typeof(List<OrderItemModel>), typeof(OrderView), default(List<OrderItemModel>));
 
-    public string StringifiedItems
+    public List<OrderItemModel> OrderItems
     {
-        get => (string)GetValue(StringifiedItemsProperty);
-        set => SetValue(StringifiedItemsProperty, value);
+        get => (List<OrderItemModel>)GetValue(OrderItemsProperty);
+        set => SetValue(OrderItemsProperty, value);
     }
 
     public static readonly BindableProperty TotalPriceProperty =

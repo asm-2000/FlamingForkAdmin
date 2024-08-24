@@ -3,6 +3,7 @@
     x:Class="FlamingForkAdmin.Views.OrderView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:model="clr-namespace:FlamingForkAdmin.Models"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Name="This">
     <VerticalStackLayout Margin="5" BindingContext="{x:Reference This}">
@@ -79,15 +80,34 @@
                         MaxLines="2"
                         Text="{Binding CustomerAddress}"
                         TextColor="{AppThemeBinding Light={StaticResource Primary},
-                                                    Dark={StaticResource PrimaryDarkText}}" />
+                                                    Dark={StaticResource PrimaryDarkText}}"
+                        VerticalTextAlignment="Center" />
                 </Border>
                 <Label
                     Padding="10,2"
                     FontAttributes="Bold"
                     Text="{Binding OrderDate}"
                     TextColor="{StaticResource Gray500}" />
-                <ScrollView Padding="10,5" Orientation="Horizontal">
-                    <Label Text="{Binding StringifiedItems}" TextColor="{StaticResource Gray400}" />
+                <Label
+                    Padding="10,5,10,0"
+                    FontAttributes="Bold"
+                    Text="Items:"
+                    TextColor="{StaticResource Gray500}" />
+                <ScrollView
+                    Padding="10,5"
+                    HeightRequest="50"
+                    Orientation="Vertical"
+                    VerticalScrollBarVisibility="Always">
+                    <CollectionView ItemsSource="{Binding OrderItems}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="model:OrderItemModel">
+                                <HorizontalStackLayout Spacing="10">
+                                    <Label Text="{Binding OrderItemName}" TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray100}}" />
+                                    <Label Text="{Binding Quantity, StringFormat='({0})'}" TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray100}}" />
+                                </HorizontalStackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
                 </ScrollView>
                 <Grid Padding="10" ColumnDefinitions="0.6*,0.4*">
                     <Label

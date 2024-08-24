@@ -84,7 +84,7 @@
                     Stroke="{AppThemeBinding Light={StaticResource Gray100},
                                              Dark={StaticResource Transparent}}"
                     StrokeShape="RoundRectangle 20">
-                    <ScrollView HeightRequest="700" Orientation="Vertical">
+                    <ScrollView HeightRequest="780" Orientation="Vertical">
                         <VerticalStackLayout>
                             <VerticalStackLayout
                                 Margin="0,180"
@@ -104,8 +104,8 @@
                                             CustomerAddress="{Binding CustomerAddress}"
                                             OrderDate="{Binding OrderDate}"
                                             OrderId="{Binding OrderId}"
+                                            OrderItems="{Binding OrderItems}"
                                             OrderStatus="{Binding OrderStatus}"
-                                            StringifiedItems="momo(2)"
                                             TotalPrice="{Binding TotalPrice}" />
                                     </DataTemplate>
                                 </CollectionView.ItemTemplate>
