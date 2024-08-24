@@ -17,6 +17,12 @@ namespace FlamingForkAdmin.ViewModels
         [ObservableProperty]
         private string _DisplayModeButtonSource;
 
+        [ObservableProperty]
+        private string _IsFetching;
+
+        [ObservableProperty]
+        private string _NoOrdersPresent;
+
         private INavigation _Navigation;
         private OrderServiceRepository _OrderService;
 
@@ -49,7 +55,10 @@ namespace FlamingForkAdmin.ViewModels
         [RelayCommand]
         public async Task FetchAllOrders()
         {
+            IsFetching = "True";
             AllOrders = await _OrderService.GetAllOrders();
+            NoOrdersPresent = AllOrders.Count == 0 ? "True" : "False";
+            IsFetching = "False";
         }
 
         [RelayCommand]

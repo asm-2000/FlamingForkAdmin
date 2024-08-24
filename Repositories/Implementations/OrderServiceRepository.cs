@@ -1,6 +1,7 @@
 ﻿using FlamingForkAdmin.Helper.Utilities;
 using FlamingForkAdmin.Models;
 using FlamingForkAdmin.Repositories.Interfaces;
+using System.Diagnostics;
 using System.Net.Http.Headers;
 using System.Text.Json;
 
@@ -34,19 +35,33 @@ namespace FlamingForkAdmin.Repositories.Implementations
                 // Tries to deserialize the response to List<OrderModel> in case of sucessful fetch.
                 if (response.IsSuccessStatusCode)
                 {
-                    string responseBody = await response.Content.ReadAsStringAsync();
-                    orderResponse = JsonSerializer.Deserialize<OrderResponseModel>(responseBody, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                    foreach (OrderModel order in orderResponse.Orders)
+                    try
                     {
-                        int totalPrice = 0;
-                        foreach (OrderItemModel orderItem in order.OrderItems)
+                        string responseBody = await response.Content.ReadAsStringAsync();
+                        orderResponse = JsonSerializer.Deserialize<OrderResponseModel>(responseBody, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                        if(orderResponse.Orders == null)
                         {
-                            totalPrice += orderItem.OrderItemPrice * orderItem.Quantity;
+                            return [];
                         }
-                        order.TotalPrice = totalPrice;
+                        else
+                        {
+                            foreach (OrderModel order in orderResponse.Orders)
+                            {
+                                int totalPrice = 0;
+                                foreach (OrderItemModel orderItem in order.OrderItems)
+                                {
+                                    totalPrice += orderItem.OrderItemPrice * orderItem.Quantity;
+                                }
+                                order.TotalPrice = totalPrice;
+                            }
+                            return orderResponse.Orders;
+                        }
                     }
-
-                    return orderResponse.Orders;
+                    catch(Exception ex)
+                    {
+                        Debug.WriteLine(ex.Message);
+                        return [];
+                    }
                 }
                 // Deserializes the response to ApiResponseMessageModel in case of error status.
                 else
