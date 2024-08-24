@@ -139,6 +139,35 @@
                             ImageSource="menu_icon.png"
                             NavigateButtonPressed="{Binding NavigateToMenuPageCommand}"
                             OrderType="My Menu" />
+                        <!--#region LogOutButton-->
+                        <Border
+                            Margin="20,20,30,0"
+                            Padding="5"
+                            BackgroundColor="{AppThemeBinding Light={StaticResource Primary},
+                                                              Dark={StaticResource PrimaryDark}}"
+                            HeightRequest="50"
+                            Stroke="{StaticResource Transparent}"
+                            StrokeShape="RoundRectangle 10">
+                            <HorizontalStackLayout
+                                HorizontalOptions="Center"
+                                Spacing="20"
+                                VerticalOptions="Center">
+                                <HorizontalStackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding LogOutAdminCommand}" />
+                                </HorizontalStackLayout.GestureRecognizers>
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="20"
+                                    Text="Log Out"
+                                    TextColor="{StaticResource White}"
+                                    VerticalTextAlignment="Center" />
+                                <Image
+                                    HeightRequest="30"
+                                    Source="log_out.png"
+                                    WidthRequest="30" />
+                            </HorizontalStackLayout>
+                        </Border>
+                        <!--#endregion-->
                     </VerticalStackLayout>
                 </Border>
                 <!--#endregion-->
@@ -169,10 +198,10 @@
                                     <DataTemplate x:DataType="model:OrderModel">
                                         <view:OrderView
                                             CustomerAddress="{Binding CustomerAddress}"
+                                            CustomerContact="{Binding CustomerContact}"
                                             OrderDate="{Binding OrderDate}"
                                             OrderId="{Binding OrderId}"
                                             OrderItems="{Binding OrderItems}"
-                                            CustomerContact="{Binding CustomerContact}"
                                             OrderStatus="{Binding OrderStatus}"
                                             TotalPrice="{Binding TotalPrice}" />
                                     </DataTemplate>
@@ -184,10 +213,7 @@
                 <!--#endregion-->
             </Grid>
             <!--#endregion-->
-            <Button
-                Command="{Binding LogOutAdminCommand}"
-                Text="Log Out"
-                WidthRequest="200" />
+
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
