@@ -6,10 +6,8 @@
     xmlns:local="clr-namespace:FlamingForkAdmin"
     Title="Flaming Fork Admin"
     Shell.FlyoutBehavior="Disabled">
-
     <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
-
 </Shell>

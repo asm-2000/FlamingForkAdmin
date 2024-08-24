@@ -7,5 +7,7 @@
     <maui:MauiWinUIApplication.Resources>
         <Thickness x:Key="TextControlBorderThemeThickness">0</Thickness>
         <Thickness x:Key="TextControlBorderThemeThicknessFocused">0</Thickness>
+        <SolidColorBrush x:Key="ComboBoxBorderBrush" Color="#6E6E6E" />
+        <SolidColorBrush x:Key="ComboBoxBorderBrushPointerOver" Color="#ACACAC" />
     </maui:MauiWinUIApplication.Resources>
 </maui:MauiWinUIApplication>
