@@ -7,6 +7,6 @@ public partial class ReceivedOrdersPage : ContentPage
 	public ReceivedOrdersPage()
 	{
 		InitializeComponent();
-		BindingContext = new ReceivedOrdersViewModel();
+		BindingContext = new ReceivedOrdersViewModel(Navigation);
 	}
 }
