@@ -16,7 +16,7 @@ namespace FlamingForkAdmin.Repositories.Implementations
             _HttpClient = new HttpClient();
             _ServerAddress = "localhost:8080";
         }
-
+        #region AllOrdersFetcher
         public async Task<List<OrderModel>> GetAllOrders()
         {
             OrderResponseModel? orderResponse = new();
@@ -36,6 +36,15 @@ namespace FlamingForkAdmin.Repositories.Implementations
                 {
                     string responseBody = await response.Content.ReadAsStringAsync();
                     orderResponse = JsonSerializer.Deserialize<OrderResponseModel>(responseBody, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    foreach (OrderModel order in orderResponse.Orders)
+                    {
+                        int totalPrice = 0;
+                        foreach (OrderItemModel orderItem in order.OrderItems)
+                        {
+                            totalPrice += orderItem.OrderItemPrice * orderItem.Quantity;
+                        }
+                        order.TotalPrice = totalPrice;
+                    }
 
                     return orderResponse.Orders;
                 }
@@ -53,5 +62,13 @@ namespace FlamingForkAdmin.Repositories.Implementations
                 return [];
             }
         }
+        #endregion
+        public async Task<List<OrderModel>> GetPlacedOrders() { return []; }
+        public async Task<List<OrderModel>> GetBeingPreparedOrders() { return []; }
+        public async Task<List<OrderModel>> GetBeingDeliveredOrders() { return []; }
+        public async Task<List<OrderModel>> GetDeliveredOrder() { return []; }
+        public async Task<List<OrderModel>> GetCancelledOrders() { return []; }
+        public async Task<string> UpdateOrderStatus(OrderModel order) { return "sucess"; }
+
     }
 }

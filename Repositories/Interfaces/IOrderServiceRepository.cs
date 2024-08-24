@@ -4,12 +4,12 @@ namespace FlamingForkAdmin.Repositories.Interfaces
 {
     public interface IOrderServiceRepository
     {
-        Task<OrderResponseModel> GetAllOrders();
-        Task<OrderResponseModel> GetPlacedOrders();
-        Task<OrderResponseModel> GetBeingPreparedOrders();
-        Task<OrderResponseModel> GetBeingDeliveredOrders();
-        Task<OrderResponseModel> GetDeliveredOrder();
-        Task<OrderResponseModel> GetCancelledOrders();
-        Task<ApiResponseMessageModel> UpdateOrderStatus(OrderModel order);
+        Task<List<OrderModel>> GetAllOrders();
+        Task<List<OrderModel>> GetPlacedOrders();
+        Task<List<OrderModel>> GetBeingPreparedOrders();
+        Task<List<OrderModel>> GetBeingDeliveredOrders();
+        Task<List<OrderModel>> GetDeliveredOrder();
+        Task<List<OrderModel>> GetCancelledOrders();
+        Task<string> UpdateOrderStatus(OrderModel order);
     }
 }

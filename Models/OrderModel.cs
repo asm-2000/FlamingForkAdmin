@@ -14,7 +14,7 @@ namespace FlamingForkAdmin.Models
         public string OrderDate { get; set; }
 
         [ObservableProperty]
-        public string? _orderStatus;
+        public string? _OrderStatus;
 
         public OrderModel(int customerId, string customerContact, string customerAddress, string orderStatus, List<OrderItemModel> orderItems, string orderDate)
         {
