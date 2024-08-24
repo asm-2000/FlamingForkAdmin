@@ -109,7 +109,7 @@
                             <view:NavigationButtonView
                                 ImageSource="order_logo.png"
                                 NavigateButtonPressed="{Binding NavigateToReceivedOrdersPageCommand}"
-                                OrderType="Received Orders" />
+                                OrderType="Received" />
                             <view:NavigationButtonView
                                 ImageSource="order_being_prepared_icon.png"
                                 NavigateButtonPressed="{Binding NavigateToBeingPreparedOrdersPageCommand}"
@@ -117,15 +117,15 @@
                             <view:NavigationButtonView
                                 ImageSource="order_being_delivered_icon.png"
                                 NavigateButtonPressed="{Binding NavigateToBeingDeliveredOrdersPageCommand}"
-                                OrderType="Received Orders" />
+                                OrderType="Being Delivered" />
                             <view:NavigationButtonView
                                 ImageSource="order_delivered_icon.png"
                                 NavigateButtonPressed="{Binding NavigateToDeliveredOrdersPageCommand}"
-                                OrderType="Received Orders" />
+                                OrderType="Delivered" />
                             <view:NavigationButtonView
                                 ImageSource="order_cancelled_icon.png"
                                 NavigateButtonPressed="{Binding NavigateToCancelledOrdersPageCommand}"
-                                OrderType="Received Orders" />
+                                OrderType="Cancelled" />
                         </VerticalStackLayout>
                         <Label
                             Margin="20,0"
@@ -171,8 +171,8 @@
                                             CustomerAddress="{Binding CustomerAddress}"
                                             OrderDate="{Binding OrderDate}"
                                             OrderId="{Binding OrderId}"
+                                            OrderItems="{Binding OrderItems}"
                                             OrderStatus="{Binding OrderStatus}"
-                                            StringifiedItems="momo(2)"
                                             TotalPrice="{Binding TotalPrice}" />
                                     </DataTemplate>
                                 </CollectionView.ItemTemplate>

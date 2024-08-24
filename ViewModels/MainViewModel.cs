@@ -57,6 +57,7 @@ namespace FlamingForkAdmin.ViewModels
         {
             IsFetching = "True";
             AllOrders = await _OrderService.GetAllOrders();
+            AllOrders = AllOrders.OrderByDescending(order => order.OrderDate).ToList();
             NoOrdersPresent = AllOrders.Count == 0 ? "True" : "False";
             IsFetching = "False";
         }
