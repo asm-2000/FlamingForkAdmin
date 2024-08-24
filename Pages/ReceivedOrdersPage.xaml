@@ -102,6 +102,7 @@
                                     <DataTemplate x:DataType="model:OrderModel">
                                         <view:OrderView
                                             CustomerAddress="{Binding CustomerAddress}"
+                                            CustomerContact="{Binding CustomerContact}"
                                             OrderDate="{Binding OrderDate}"
                                             OrderId="{Binding OrderId}"
                                             OrderItems="{Binding OrderItems}"

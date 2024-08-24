@@ -37,6 +37,15 @@ public partial class OrderView : ContentView
         set => SetValue(CustomerAddressProperty, value);
     }
 
+    public static readonly BindableProperty CustomerContactProperty =
+        BindableProperty.Create(nameof(CustomerContact), typeof(string), typeof(OrderView), default(string));
+
+    public string CustomerContact
+    {
+        get => (string)GetValue(CustomerContactProperty);
+        set => SetValue(CustomerContactProperty, value);
+    }
+
     public static readonly BindableProperty OrderDateProperty =
         BindableProperty.Create(nameof(OrderDate), typeof(string), typeof(OrderView), default(string));
 

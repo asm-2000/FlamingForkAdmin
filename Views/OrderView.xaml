@@ -89,6 +89,12 @@
                     Text="{Binding OrderDate}"
                     TextColor="{StaticResource Gray500}" />
                 <Label
+                    Padding="10,2"
+                    FontAttributes="Bold"
+                    Text="{Binding CustomerContact}"
+                    TextColor="{AppThemeBinding Light={StaticResource Primary},
+                                                Dark={StaticResource Gold}}" />
+                <Label
                     Padding="10,5,10,0"
                     FontAttributes="Bold"
                     Text="Items:"

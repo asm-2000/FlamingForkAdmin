@@ -172,6 +172,7 @@
                                             OrderDate="{Binding OrderDate}"
                                             OrderId="{Binding OrderId}"
                                             OrderItems="{Binding OrderItems}"
+                                            CustomerContact="{Binding CustomerContact}"
                                             OrderStatus="{Binding OrderStatus}"
                                             TotalPrice="{Binding TotalPrice}" />
                                     </DataTemplate>
