@@ -12,9 +12,10 @@
     <ScrollView>
         <VerticalStackLayout Padding="100,30">
             <ActivityIndicator
-                HeightRequest="20"
+                HeightRequest="30"
                 IsRunning="{Binding IsFetching}"
                 IsVisible="{Binding IsFetching}"
+                WidthRequest="30"
                 Color="{StaticResource Gray100}" />
             <!--#region Title Box-->
             <FlexLayout
@@ -102,6 +103,7 @@
                                     <DataTemplate x:DataType="model:OrderModel">
                                         <view:OrderView
                                             CustomerAddress="{Binding CustomerAddress}"
+                                            CustomerContact="{Binding CustomerContact}"
                                             OrderDate="{Binding OrderDate}"
                                             OrderId="{Binding OrderId}"
                                             OrderItems="{Binding OrderItems}"
