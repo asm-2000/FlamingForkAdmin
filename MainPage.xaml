@@ -10,6 +10,20 @@
     Shell.NavBarIsVisible="False">
     <ScrollView>
         <VerticalStackLayout Padding="100,50">
+            <Border
+                Margin="5,5"
+                Padding="5"
+                BackgroundColor="{StaticResource Primary}"
+                HorizontalOptions="Center"
+                IsVisible="{Binding StatusChangeMessageVisibility}"
+                Stroke="{StaticResource Transparent}"
+                StrokeShape="RoundRectangle 10">
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="12"
+                    Text="{Binding StatusChangeResponseMessage}"
+                    TextColor="{StaticResource White}" />
+            </Border>
             <ActivityIndicator
                 HeightRequest="30"
                 IsRunning="{Binding IsFetching}"
@@ -204,6 +218,7 @@
                                             OrderId="{Binding OrderId}"
                                             OrderItems="{Binding OrderItems}"
                                             OrderStatus="{Binding OrderStatus}"
+                                            OrderStatusChangedCommand="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=ChangeOrderStatusCommand}"
                                             TotalPrice="{Binding TotalPrice}" />
                                     </DataTemplate>
                                 </CollectionView.ItemTemplate>
@@ -214,7 +229,6 @@
                 <!--#endregion-->
             </Grid>
             <!--#endregion-->
-
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

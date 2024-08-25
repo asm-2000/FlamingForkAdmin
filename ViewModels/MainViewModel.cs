@@ -23,6 +23,12 @@ namespace FlamingForkAdmin.ViewModels
         [ObservableProperty]
         private string _NoOrdersPresent;
 
+        [ObservableProperty]
+        private string _StatusChangeResponseMessage;
+
+        [ObservableProperty]
+        private string _StatusChangeMessageVisibility;
+
         private INavigation _Navigation;
         private OrderServiceRepository _OrderService;
 
@@ -34,7 +40,8 @@ namespace FlamingForkAdmin.ViewModels
         {
             DisplayModeButtonSource = Application.Current.UserAppTheme == AppTheme.Light ? "dark_mode_icon.png" : "light_mode_icon.png";
             _Navigation = navigation;
-            AllOrders = []; 
+            AllOrders = [];
+            StatusChangeMessageVisibility = "False";
             _OrderService = new OrderServiceRepository();
             CheckLoginStatus();
             FetchAllOrders();
@@ -85,6 +92,23 @@ namespace FlamingForkAdmin.ViewModels
         {
             Application.Current.UserAppTheme = Application.Current.UserAppTheme == AppTheme.Light ? AppTheme.Dark : AppTheme.Light;
             DisplayModeButtonSource = Application.Current.UserAppTheme == AppTheme.Light ? "dark_mode_icon.png" : "light_mode_icon.png";
+        }
+
+        [RelayCommand]
+        public async Task ChangeOrderStatus(Tuple<string,string> orderParameters)
+        {
+            await RefreshAllOrders();
+            var specificOrder = AllOrders.Find(order => Convert.ToString(order.OrderId) == orderParameters.Item1);
+            bool changeConfirmation = await App.Current.MainPage.DisplayAlert("Status Change Confirmation",$"Change order status from '{specificOrder.OrderStatus}' to '{orderParameters.Item2}'","Yes","No");
+            if(changeConfirmation)
+            {
+                specificOrder.OrderStatus = orderParameters.Item2;
+                StatusChangeResponseMessage = await _OrderService.UpdateOrderStatus(specificOrder);
+                await RefreshAllOrders();
+                StatusChangeMessageVisibility = "True";
+                await Task.Delay(1000);
+                StatusChangeMessageVisibility = "False";
+            }
         }
 
         [RelayCommand]
