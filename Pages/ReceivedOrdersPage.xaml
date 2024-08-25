@@ -12,9 +12,10 @@
     <ScrollView>
         <VerticalStackLayout Padding="100,30">
             <ActivityIndicator
-                HeightRequest="20"
+                HeightRequest="30"
                 IsRunning="{Binding IsFetching}"
                 IsVisible="{Binding IsFetching}"
+                WidthRequest="30"
                 Color="{StaticResource Gray100}" />
             <!--#region Title Box-->
             <FlexLayout

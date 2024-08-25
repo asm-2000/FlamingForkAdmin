@@ -11,7 +11,8 @@
     <ScrollView>
         <VerticalStackLayout Padding="100,50">
             <ActivityIndicator
-                HeightRequest="20"
+                HeightRequest="30"
+                WidthRequest="30"
                 IsRunning="{Binding IsFetching}"
                 IsVisible="{Binding IsFetching}"
                 Color="{StaticResource Gray100}" />
