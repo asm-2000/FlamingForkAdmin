@@ -17,12 +17,19 @@ namespace FlamingForkAdmin.ViewModels
         [ObservableProperty]
         private string? _NoOrdersPresent;
 
+        [ObservableProperty]
+        private string _StatusChangeResponseMessage;
+
+        [ObservableProperty]
+        private string _StatusChangeMessageVisibility;
+
         private OrderServiceRepository _OrderService;
         private INavigation _Navigation;
         #endregion
 
         public ReceivedOrdersViewModel(INavigation navigation)
         {
+            StatusChangeMessageVisibility = "False";
             _OrderService = new OrderServiceRepository();
             _Navigation = navigation;
             FetchReceivedOrders();
@@ -41,6 +48,22 @@ namespace FlamingForkAdmin.ViewModels
             ReceivedOrders = await _OrderService.GetPlacedOrders();
             NoOrdersPresent = ReceivedOrders.Count == 0 ? "True" : "False";
             IsFetching = "False";
+        }
+
+        [RelayCommand]
+        public async Task ChangeOrderStatus(Tuple<string, string> orderParameters)
+        {
+            var specificOrder = ReceivedOrders.Find(order => Convert.ToString(order.OrderId) == orderParameters.Item1);
+            bool changeConfirmation = await App.Current.MainPage.DisplayAlert("Status Change Confirmation", $"Change order status from '{specificOrder.OrderStatus}' to '{orderParameters.Item2}'", "Yes", "No");
+            if (changeConfirmation)
+            {
+                specificOrder.OrderStatus = orderParameters.Item2;
+                StatusChangeResponseMessage = await _OrderService.UpdateOrderStatus(specificOrder);
+                await FetchReceivedOrders();
+                StatusChangeMessageVisibility = "True";
+                await Task.Delay(1000);
+                StatusChangeMessageVisibility = "False";
+            }
         }
     }
 }

@@ -3,9 +3,15 @@
     x:Class="FlamingForkAdmin.Views.OrderView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converter="clr-namespace:FlamingForkAdmin.Helper.Converters"
     xmlns:model="clr-namespace:FlamingForkAdmin.Models"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Name="This">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <converter:TupleConverter x:Key="TupleConverter" />
+        </ResourceDictionary>
+    </ContentView.Resources>
     <VerticalStackLayout Margin="5" BindingContext="{x:Reference This}">
         <Border
             Padding="10"
@@ -127,13 +133,21 @@
                                                     Dark={StaticResource PrimaryDarkText}}"
                         VerticalTextAlignment="Center" />
                     <Picker
+                        x:Name="StatusPicker"
                         Grid.Column="1"
                         BackgroundColor="{AppThemeBinding Light={StaticResource White}}"
                         SelectedItem="{Binding OrderStatus}"
                         TextColor="{AppThemeBinding Light={StaticResource Gray400},
                                                     Dark={StaticResource Gray200}}">
                         <Picker.Behaviors>
-                            <toolkit:EventToCommandBehavior Command="{Binding OrderStatusChanged}" EventName="SelectedIndexChanged" />
+                            <toolkit:EventToCommandBehavior Command="{Binding OrderStatusChangedCommand}" EventName="SelectedIndexChanged">
+                                <toolkit:EventToCommandBehavior.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource TupleConverter}">
+                                        <Binding Path="OrderId" />
+                                        <Binding Path="SelectedItem" Source="{x:Reference StatusPicker}" />
+                                    </MultiBinding>
+                                </toolkit:EventToCommandBehavior.CommandParameter>
+                            </toolkit:EventToCommandBehavior>
                         </Picker.Behaviors>
                         <Picker.ItemsSource>
                             <x:Array Type="{x:Type x:String}">

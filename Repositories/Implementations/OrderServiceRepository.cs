@@ -2,7 +2,9 @@
 using FlamingForkAdmin.Models;
 using FlamingForkAdmin.Repositories.Interfaces;
 using System.Diagnostics;
+using System.Net;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Text.Json;
 
 namespace FlamingForkAdmin.Repositories.Implementations
@@ -17,7 +19,9 @@ namespace FlamingForkAdmin.Repositories.Implementations
             _HttpClient = new HttpClient();
             _ServerAddress = "localhost:8080";
         }
+
         #region AllOrdersFetcher
+
         public async Task<List<OrderModel>> GetAllOrders()
         {
             OrderResponseModel? orderResponse = new();
@@ -39,7 +43,7 @@ namespace FlamingForkAdmin.Repositories.Implementations
                     {
                         string responseBody = await response.Content.ReadAsStringAsync();
                         orderResponse = JsonSerializer.Deserialize<OrderResponseModel>(responseBody, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                        if(orderResponse.Orders == null)
+                        if (orderResponse.Orders == null)
                         {
                             return [];
                         }
@@ -57,7 +61,7 @@ namespace FlamingForkAdmin.Repositories.Implementations
                             return orderResponse.Orders;
                         }
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         Debug.WriteLine(ex.Message);
                         return [];
@@ -77,7 +81,11 @@ namespace FlamingForkAdmin.Repositories.Implementations
                 return [];
             }
         }
-        #endregion
+
+        #endregion AllOrdersFetcher
+
+        #region PlacedOrdersFetcher
+
         public async Task<List<OrderModel>> GetPlacedOrders()
         {
             OrderResponseModel? orderResponse = new();
@@ -137,11 +145,46 @@ namespace FlamingForkAdmin.Repositories.Implementations
                 return [];
             }
         }
-        public async Task<List<OrderModel>> GetBeingPreparedOrders() { return []; }
-        public async Task<List<OrderModel>> GetBeingDeliveredOrders() { return []; }
-        public async Task<List<OrderModel>> GetDeliveredOrder() { return []; }
-        public async Task<List<OrderModel>> GetCancelledOrders() { return []; }
-        public async Task<string> UpdateOrderStatus(OrderModel order) { return "sucess"; }
 
+        #endregion PlacedOrdersFetcher
+
+        public async Task<List<OrderModel>> GetBeingPreparedOrders()
+        { return []; }
+
+        public async Task<List<OrderModel>> GetBeingDeliveredOrders()
+        { return []; }
+
+        public async Task<List<OrderModel>> GetDeliveredOrder()
+        { return []; }
+
+        public async Task<List<OrderModel>> GetCancelledOrders()
+        { return []; }
+
+        #region OrderStatusUpdater
+
+        public async Task<string> UpdateOrderStatus(OrderModel order)
+        {
+            ApiResponseMessageModel? responseMessage = new ApiResponseMessageModel();
+            var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+            string token = await SecureStorageHandler.GetAuthenticationToken();
+            _HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var jsonContent = JsonSerializer.Serialize<OrderModel>(order, options);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+            // Tries to communicate with backend API endpoint.
+            try
+            {
+                var uri = new Uri("http://" + _ServerAddress + "/order/changeOrderStatus");
+                var response = await _HttpClient.PutAsync(uri, content);
+                string responseBody = await response.Content.ReadAsStringAsync();
+                responseMessage = JsonSerializer.Deserialize<ApiResponseMessageModel>(responseBody, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                return responseMessage.Message;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        #endregion OrderStatusUpdater
     }
 }
