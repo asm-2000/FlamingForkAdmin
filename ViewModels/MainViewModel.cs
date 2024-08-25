@@ -34,6 +34,7 @@ namespace FlamingForkAdmin.ViewModels
         {
             DisplayModeButtonSource = Application.Current.UserAppTheme == AppTheme.Light ? "dark_mode_icon.png" : "light_mode_icon.png";
             _Navigation = navigation;
+            AllOrders = []; 
             _OrderService = new OrderServiceRepository();
             CheckLoginStatus();
             FetchAllOrders();
@@ -54,6 +55,23 @@ namespace FlamingForkAdmin.ViewModels
 
         [RelayCommand]
         public async Task FetchAllOrders()
+        {
+            IsFetching = "True";
+            string? token = await SecureStorageHandler.GetAuthenticationToken();
+            while(AllOrders.Count == 0)
+            {
+                if (token != "Not Found")
+                {
+                    AllOrders = await _OrderService.GetAllOrders();
+                    AllOrders = AllOrders.OrderByDescending(order => order.OrderDate).ToList();
+                    NoOrdersPresent = AllOrders.Count == 0 ? "True" : "False";
+                }
+            }
+            IsFetching = "False";
+        }
+
+        [RelayCommand]
+        public async Task RefreshAllOrders()
         {
             IsFetching = "True";
             AllOrders = await _OrderService.GetAllOrders();
