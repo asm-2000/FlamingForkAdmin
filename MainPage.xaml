@@ -12,9 +12,9 @@
         <VerticalStackLayout Padding="100,50">
             <ActivityIndicator
                 HeightRequest="30"
-                WidthRequest="30"
                 IsRunning="{Binding IsFetching}"
                 IsVisible="{Binding IsFetching}"
+                WidthRequest="30"
                 Color="{StaticResource Gray100}" />
             <!--#region Title Box-->
             <FlexLayout
@@ -48,7 +48,7 @@
                         WidthRequest="80">
                         <ImageButton
                             BackgroundColor="{StaticResource Transparent}"
-                            Command="{Binding FetchAllOrdersCommand}"
+                            Command="{Binding RefreshAllOrdersCommand}"
                             HeightRequest="20"
                             Source="refresh_icon.png"
                             WidthRequest="20" />
