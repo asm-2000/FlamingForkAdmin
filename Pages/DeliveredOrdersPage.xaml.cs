@@ -7,6 +7,6 @@ public partial class DeliveredOrdersPage : ContentPage
 	public DeliveredOrdersPage()
 	{
 		InitializeComponent();
-		BindingContext = new DeliveredOrdersViewModel();
+		BindingContext = new DeliveredOrdersViewModel(Navigation);
 	}
 }
