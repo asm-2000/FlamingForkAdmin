@@ -7,6 +7,6 @@ public partial class CancelledOrdersPage : ContentPage
 	public CancelledOrdersPage()
 	{
 		InitializeComponent();
-		BindingContext = new CancelledOrdersViewModel();
+		BindingContext = new CancelledOrdersViewModel(Navigation);
 	}
 }
