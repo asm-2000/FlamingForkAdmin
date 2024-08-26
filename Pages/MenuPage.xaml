@@ -3,13 +3,160 @@
     x:Class="FlamingForkAdmin.Pages.MenuPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:model="clr-namespace:FlamingForkAdmin.Models"
+    xmlns:view="clr-namespace:FlamingForkAdmin.Views"
     xmlns:viewmodel="clr-namespace:FlamingForkAdmin.ViewModels"
     Title="MenuPage"
-    x:DataType="viewmodel:MenuViewModel">
-    <VerticalStackLayout>
-        <Label
-            HorizontalOptions="Center"
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" />
-    </VerticalStackLayout>
+    x:DataType="viewmodel:MenuViewModel"
+    Shell.NavBarIsVisible="False">
+    <ScrollView>
+        <VerticalStackLayout Padding="100,30">
+            <Border
+                Margin="5,5"
+                Padding="5"
+                BackgroundColor="{StaticResource Primary}"
+                HorizontalOptions="Center"
+                IsVisible="{Binding MenuOperationResponseMessageVisibility}"
+                Stroke="{StaticResource Transparent}"
+                StrokeShape="RoundRectangle 10">
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="12"
+                    Text="{Binding MenuOperationResponseMessage}"
+                    TextColor="{StaticResource White}" />
+            </Border>
+            <ActivityIndicator
+                HeightRequest="30"
+                IsRunning="{Binding IsFetching}"
+                IsVisible="{Binding IsFetching}"
+                WidthRequest="30"
+                Color="{StaticResource Gray100}" />
+            <!--#region Title Box-->
+            <FlexLayout
+                Margin="0,0,0,20"
+                Direction="Row"
+                FlowDirection="LeftToRight"
+                JustifyContent="SpaceBetween">
+                <Border
+                    Margin="2"
+                    Padding="10"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource Transparent},
+                                                      Dark={StaticResource DeepGray}}"
+                    HeightRequest="70"
+                    HorizontalOptions="End"
+                    Stroke="{AppThemeBinding Light={StaticResource Gray500},
+                                             Dark={StaticResource Transparent}}"
+                    StrokeShape="RoundRectangle 20"
+                    WidthRequest="80">
+                    <ImageButton
+                        BackgroundColor="{StaticResource Transparent}"
+                        Command="{Binding NavigateBackCommand}"
+                        HeightRequest="20"
+                        Source="back_icon.png"
+                        WidthRequest="20" />
+                </Border>
+                <HorizontalStackLayout Spacing="20">
+                    <Label
+                        FontAttributes="Bold"
+                        FontFamily="PoppinsRegular"
+                        FontSize="30"
+                        Text="Menu Items"
+                        VerticalOptions="Center" />
+                    <HorizontalStackLayout Spacing="10">
+                        <Border
+                            Margin="2"
+                            Padding="10"
+                            BackgroundColor="{AppThemeBinding Light={StaticResource Transparent},
+                                                              Dark={StaticResource DeepGray}}"
+                            HeightRequest="70"
+                            HorizontalOptions="End"
+                            Stroke="{AppThemeBinding Light={StaticResource Gray500},
+                                                     Dark={StaticResource Transparent}}"
+                            StrokeShape="RoundRectangle 20"
+                            WidthRequest="80">
+                            <ImageButton
+                                BackgroundColor="{StaticResource Transparent}"
+                                Command="{Binding FetchMenuItemsCommand}"
+                                HeightRequest="20"
+                                Source="refresh_icon.png"
+                                WidthRequest="20" />
+                        </Border>
+                        <Border
+                            Margin="2"
+                            Padding="10"
+                            BackgroundColor="{AppThemeBinding Light={StaticResource Transparent},
+                                                              Dark={StaticResource DeepGray}}"
+                            HeightRequest="70"
+                            HorizontalOptions="End"
+                            Stroke="{AppThemeBinding Light={StaticResource Gray500},
+                                                     Dark={StaticResource Transparent}}"
+                            StrokeShape="RoundRectangle 20"
+                            WidthRequest="80">
+                            <ImageButton
+                                BackgroundColor="{StaticResource Transparent}"
+                                Command="{Binding AddMenuItemCommand}"
+                                HeightRequest="20"
+                                Source="add_icon.png"
+                                WidthRequest="20" />
+                        </Border>
+                    </HorizontalStackLayout>
+                </HorizontalStackLayout>
+            </FlexLayout>
+            <BoxView
+                Margin="0,0,0,40"
+                BackgroundColor="{AppThemeBinding Light={StaticResource PrimaryDark},
+                                                  Dark={StaticResource Gold}}"
+                HeightRequest="2" />
+            <!--#endregion-->
+            <!--#region Page Body-->
+            <Grid ColumnDefinitions="1*">
+                <!--#region All Orders-->
+                <Border
+                    Grid.Column="0"
+                    Padding="30"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource Transparent},
+                                                      Dark={StaticResource DeepGray}}"
+                    Stroke="{AppThemeBinding Light={StaticResource Gray100},
+                                             Dark={StaticResource Transparent}}"
+                    StrokeShape="RoundRectangle 20">
+                    <ScrollView HeightRequest="780" Orientation="Vertical">
+                        <VerticalStackLayout>
+                            <VerticalStackLayout
+                                Margin="0,180"
+                                HorizontalOptions="Center"
+                                IsVisible="{Binding NoMenuItemsPresent}"
+                                Spacing="30">
+                                <HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
+                                    <Image HeightRequest="200" Source="menu_icon.png" />
+                                    <Image
+                                        HeightRequest="60"
+                                        Source="cross_icon.png"
+                                        VerticalOptions="Start" />
+                                </HorizontalStackLayout>
+                                <Label
+                                    FontSize="35"
+                                    Text="No Menu Items To show!"
+                                    TextColor="{StaticResource Gray300}" />
+                            </VerticalStackLayout>
+                            <CollectionView ItemsLayout="VerticalGrid, 4" ItemsSource="{Binding MenuItems}">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="model:MenuItemModel">
+                                        <view:MenuItemView
+                                            DeleteMenuItemCommand="{Binding Source={x:RelativeSource AncestorType={x:Type viewmodel:MenuViewModel}}, Path=DeleteMenuItemCommand}"
+                                            ItemCategory="{Binding ItemCategory}"
+                                            ItemId="{Binding ItemId}"
+                                            ItemImageSource="{Binding ItemImageUrl}"
+                                            ItemName="{Binding ItemName}"
+                                            ItemPrice="{Binding ItemPrice}" />
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </VerticalStackLayout>
+                    </ScrollView>
+                </Border>
+                <!--#endregion-->
+            </Grid>
+            <!--#endregion-->
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
