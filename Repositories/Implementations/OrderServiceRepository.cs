@@ -149,7 +149,64 @@ namespace FlamingForkAdmin.Repositories.Implementations
         #endregion PlacedOrdersFetcher
 
         public async Task<List<OrderModel>> GetBeingPreparedOrders()
-        { return []; }
+        {
+            OrderResponseModel? orderResponse = new();
+            ApiResponseMessageModel? errorResponse = new();
+
+            try
+            {
+                // Fetches authentication token from secure storage.
+                string token = await SecureStorageHandler.GetAuthenticationToken();
+                _HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                var uri = new Uri("http://" + _ServerAddress + "/order/beingPreparedOrders");
+                var response = await _HttpClient.GetAsync(uri);
+
+                // Tries to deserialize the response to List<OrderModel> in case of sucessful fetch.
+                if (response.IsSuccessStatusCode)
+                {
+                    try
+                    {
+                        string responseBody = await response.Content.ReadAsStringAsync();
+                        orderResponse = JsonSerializer.Deserialize<OrderResponseModel>(responseBody, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                        if (orderResponse.Orders == null)
+                        {
+                            return [];
+                        }
+                        else
+                        {
+                            foreach (OrderModel order in orderResponse.Orders)
+                            {
+                                int totalPrice = 0;
+                                foreach (OrderItemModel orderItem in order.OrderItems)
+                                {
+                                    totalPrice += orderItem.OrderItemPrice * orderItem.Quantity;
+                                }
+                                order.TotalPrice = totalPrice;
+                            }
+                            return orderResponse.Orders;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine(ex.Message);
+                        return [];
+                    }
+                }
+                // Deserializes the response to ApiResponseMessageModel in case of error status.
+                else
+                {
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    errorResponse = JsonSerializer.Deserialize<ApiResponseMessageModel>(responseBody, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    return [];
+                }
+            }
+            // Returns empty list if communication with API fails.
+            catch
+            {
+                return [];
+            }
+        }
 
         public async Task<List<OrderModel>> GetBeingDeliveredOrders()
         { return []; }
