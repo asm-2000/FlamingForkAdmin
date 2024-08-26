@@ -2,6 +2,6 @@
 {
     public class MenuResponseModel
     {
-        public List<MenuItemModel>? MenuItems { get; set; }
+        public List<MenuItemModel>? AllMenuItems { get; set; }
     }
 }
