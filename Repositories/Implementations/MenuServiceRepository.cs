@@ -136,7 +136,31 @@ namespace FlamingForkAdmin.Repositories.Implementations
 
         public async Task<string> UpdateMenuItemDetails(MenuItemModel menuItem)
         {
-            return string.Empty;
+            ApiResponseMessageModel? errorResponse = new ApiResponseMessageModel();
+            var options = new JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                };
+            var jsonContent = JsonSerializer.Serialize<MenuItemModel>(menuItem, options);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+            try
+            {
+                // Fetches authentication token from secure storage.
+                string token = await SecureStorageHandler.GetAuthenticationToken();
+                _HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                var uri = new Uri("http://" + _ServerAddress + "/menu/updateMenuItem/");
+                var response = await _HttpClient.PutAsync(uri, content);
+
+                // Deserializes response from API.
+                var responseBody = await response.Content.ReadAsStringAsync();
+                errorResponse = JsonSerializer.Deserialize<ApiResponseMessageModel>(responseBody, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                return errorResponse.Message;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
         #endregion MenuItemUpdateService
