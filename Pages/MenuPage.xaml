@@ -147,7 +147,8 @@
                                             ItemId="{Binding ItemId}"
                                             ItemImageSource="{Binding ItemImageUrl}"
                                             ItemName="{Binding ItemName}"
-                                            ItemPrice="{Binding ItemPrice}" />
+                                            ItemPrice="{Binding ItemPrice}"
+                                            UpdateMenuItemCommand="{Binding Source={x:RelativeSource AncestorType={x:Type viewmodel:MenuViewModel}}, Path=EditMenuItemDetailsCommand}" />
                                     </DataTemplate>
                                 </CollectionView.ItemTemplate>
                             </CollectionView>

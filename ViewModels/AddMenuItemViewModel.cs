@@ -29,12 +29,20 @@ namespace FlamingForkAdmin.ViewModels
         [ObservableProperty]
         private string _ResponseMessageVisibility;
 
+        [ObservableProperty]
+        private string _IsNewAddition;
+
+        [ObservableProperty]
+        private string _IsUpdate;
+
         private INavigation _Navigation;
         private MenuServiceRepository _MenuService;
         #endregion
 
         public AddMenuItemViewModel(INavigation navigation, MenuItemModel menuItem)
         {
+            IsUpdate = "True";
+            IsNewAddition = "False";
             ResponseMessageVisibility = "False";
             _MenuService = new MenuServiceRepository();
             _Navigation = navigation;
@@ -47,6 +55,8 @@ namespace FlamingForkAdmin.ViewModels
 
         public AddMenuItemViewModel(INavigation navigation)
         {
+            IsUpdate = "False";
+            IsNewAddition = "True";
             ResponseMessageVisibility = "False";
             _MenuService = new MenuServiceRepository();
             _Navigation = navigation;
@@ -66,7 +76,17 @@ namespace FlamingForkAdmin.ViewModels
             ResponseMessageVisibility = "True";
             await Task.Delay(1000);
             await _Navigation.PopModalAsync();
-            return;
+        }
+
+        [RelayCommand]
+        public async Task UpdateItemDetails()
+        {
+            MenuItemModel item = new(ItemName, Convert.ToInt32(ItemPrice), ItemCategory, ItemImageSource);
+            item.ItemId = ItemId;
+            ResponseMessage = await _MenuService.UpdateMenuItemDetails(item);
+            ResponseMessageVisibility = "True";
+            await Task.Delay(1000);
+            await _Navigation.PopModalAsync();
         }
     }
 }

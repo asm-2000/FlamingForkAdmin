@@ -78,9 +78,10 @@ namespace FlamingForkAdmin.ViewModels
         }
 
         [RelayCommand]
-        public async Task EditMenuItemDetails()
+        public async Task EditMenuItemDetails(string itemId)
         {
-            return;
+            MenuItemModel? itemToUpdate = MenuItems.Find(item => Convert.ToString(item.ItemId) == itemId);
+            await _Navigation.PushModalAsync(new AddMenuItemPopUpView(itemToUpdate));
         }
     }
 }
