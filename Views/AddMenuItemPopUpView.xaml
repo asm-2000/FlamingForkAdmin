@@ -94,7 +94,16 @@
                     FontAttributes="Bold"
                     FontSize="20"
                     HeightRequest="50"
+                    IsVisible="{Binding IsNewAddition}"
                     Text="Add Menu Item" />
+                <Button
+                    Padding="0"
+                    Command="{Binding UpdateItemDetailsCommand}"
+                    FontAttributes="Bold"
+                    FontSize="20"
+                    HeightRequest="50"
+                    IsVisible="{Binding IsUpdate}"
+                    Text="Update Item Details" />
             </VerticalStackLayout>
             <Border
                 Margin="5"
