@@ -2,6 +2,7 @@
 using FlamingForkAdmin.Models;
 using FlamingForkAdmin.Repositories.Interfaces;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Text.Json;
 
 namespace FlamingForkAdmin.Repositories.Implementations
@@ -19,7 +20,34 @@ namespace FlamingForkAdmin.Repositories.Implementations
 
         public async Task<string> AddMenuItem(MenuItemModel menuItem)
         {
-            return string.Empty;
+            ApiResponseMessageModel? apiResponse = new();
+            var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
+
+            try
+            {
+                // Fetches authentication token from secure storage.
+                string token = await SecureStorageHandler.GetAuthenticationToken();
+                _HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var jsonContent = JsonSerializer.Serialize<MenuItemModel>(menuItem,options);
+                var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+                var uri = new Uri("http://" + _ServerAddress + "/menu/addMenuItem");
+                var response = await _HttpClient.PostAsync(uri,content);
+
+                // Tries to deserialize the response to ApiResponseMessageModel in case of sucessful communication with API.
+
+                        string responseBody = await response.Content.ReadAsStringAsync();
+                        apiResponse = JsonSerializer.Deserialize<ApiResponseMessageModel>(responseBody, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    return apiResponse.Message;
+            }
+            // Returns empty list if communication with API fails.
+            catch
+            {
+                return "Cannot Add Item!";
+            }
         }
 
         #endregion MenuItemAdder

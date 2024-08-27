@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using FlamingForkAdmin.Models;
 using FlamingForkAdmin.Repositories.Implementations;
+using FlamingForkAdmin.Views;
 
 namespace FlamingForkAdmin.ViewModels
 {
@@ -60,11 +61,17 @@ namespace FlamingForkAdmin.ViewModels
         [RelayCommand]
         public async Task AddMenuItem()
         {
-            return;
+            await _Navigation.PushModalAsync(new AddMenuItemPopUpView());
         }
 
         [RelayCommand]
         public async Task DeleteMenuItem()
+        {
+            return;
+        }
+
+        [RelayCommand]
+        public async Task EditMenuItemDetails()
         {
             return;
         }
