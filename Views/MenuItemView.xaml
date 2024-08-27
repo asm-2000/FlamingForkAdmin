@@ -17,8 +17,11 @@
                 <Image
                     Aspect="AspectFill"
                     HeightRequest="300"
-                    Source="{Binding ItemImageSource}"
-                    WidthRequest="310" />
+                    WidthRequest="310">
+                    <Image.Source>
+                        <UriImageSource CachingEnabled="False" Uri="{Binding ItemImageSource}" />
+                    </Image.Source>
+                </Image>
                 <VerticalStackLayout Padding="20,0" Spacing="10">
                     <Label
                         x:Name="MenuItemId"
@@ -46,15 +49,30 @@
                         TextColor="{AppThemeBinding Light={StaticResource Primary},
                                                     Dark={StaticResource Gold}}" />
                 </VerticalStackLayout>
-                <Button
+                <Grid
                     Margin="20,0,20,10"
-                    Padding="0"
-                    Command="{Binding DeleteMenuItemCommand}"
-                    CommandParameter="{Binding Source={Reference MenuItemId}, Path=Text}"
-                    FontAttributes="Bold"
-                    FontSize="20"
-                    HeightRequest="40"
-                    Text="Delete Item" />
+                    ColumnDefinitions="0.5*,0.5*"
+                    ColumnSpacing="10">
+                    <Button
+                        Grid.Column="0"
+                        Padding="0"
+                        BackgroundColor="{StaticResource DeepGray}"
+                        Command="{Binding UpdateMenuItemCommand}"
+                        CommandParameter="{Binding Source={Reference MenuItemId}, Path=Text}"
+                        FontAttributes="Bold"
+                        FontSize="18"
+                        HeightRequest="40"
+                        Text="Update Item" />
+                    <Button
+                        Grid.Column="1"
+                        Padding="0"
+                        Command="{Binding DeleteMenuItemCommand}"
+                        CommandParameter="{Binding Source={Reference MenuItemId}, Path=Text}"
+                        FontAttributes="Bold"
+                        FontSize="18"
+                        HeightRequest="40"
+                        Text="Delete Item" />
+                </Grid>
             </VerticalStackLayout>
         </Border>
     </VerticalStackLayout>

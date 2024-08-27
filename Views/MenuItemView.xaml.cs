@@ -62,5 +62,14 @@ namespace FlamingForkAdmin.Views
             get => (IAsyncRelayCommand)GetValue(DeleteMenuItemCommandProperty);
             set => SetValue(DeleteMenuItemCommandProperty, value);
         }
+
+        public static readonly BindableProperty UpdateMenuItemCommandProperty =
+            BindableProperty.Create(nameof(UpdateMenuItemCommand), typeof(IAsyncRelayCommand), typeof(MenuItemView));
+
+        public IAsyncRelayCommand UpdateMenuItemCommand
+        {
+            get => (IAsyncRelayCommand)GetValue(UpdateMenuItemCommandProperty);
+            set => SetValue(UpdateMenuItemCommandProperty, value);
+        }
     }
 }
