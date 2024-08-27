@@ -10,5 +10,13 @@ namespace FlamingForkAdmin.Models
         public string? ItemDescription { get; set; }
         public string? ItemCategory { get; set; }
         public string? ItemImageUrl { get; set; }
+
+        public MenuItemModel(string itemName, int itemPrice, string itemCategory, string itemImageUrl)
+        {
+            ItemName = itemName;
+            ItemCategory = itemCategory;
+            ItemPrice = itemPrice;
+            ItemImageUrl = itemImageUrl;
+        }
     }
 }

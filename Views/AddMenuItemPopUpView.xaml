@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="FlamingForkAdmin.Views.AddMenuItemPopUpView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewmodel="clr-namespace:FlamingForkAdmin.ViewModels"
+    x:DataType="viewmodel:AddMenuItemViewModel"
+    BackgroundColor="Transparent"
+    HeightRequest="780"
+    WidthRequest="500">
+    <Border
+        BackgroundColor="{AppThemeBinding Light={StaticResource Gray50},
+                                          Dark={StaticResource Black}}"
+        Stroke="{StaticResource Transparent}"
+        StrokeShape="RoundRectangle 20">
+        <VerticalStackLayout
+            BackgroundColor="{StaticResource Transparent}"
+            HeightRequest="780"
+            Spacing="10"
+            WidthRequest="500">
+            <ImageButton
+                Margin="5"
+                BackgroundColor="{StaticResource Transparent}"
+                Command="{Binding ClosePopupCommand}"
+                HeightRequest="20"
+                HorizontalOptions="End"
+                Source="close_icon.png" />
+            <Image
+                Aspect="Fill"
+                HeightRequest="380"
+                Source="{Binding ItemImageSource}"
+                WidthRequest="500" />
+            <VerticalStackLayout Padding="20,0" Spacing="10">
+                <Border
+                    BackgroundColor="{AppThemeBinding Light={StaticResource White},
+                                                      Dark={StaticResource DeepGray}}"
+                    Stroke="{AppThemeBinding Light={StaticResource Gray300},
+                                             Dark={StaticResource Transparent}}"
+                    StrokeShape="RoundRectangle 7">
+                    <Entry
+                        FontSize="15"
+                        HeightRequest="50"
+                        Placeholder="Enter Item's Name"
+                        Text="{Binding ItemName}" />
+                </Border>
+                <Border
+                    BackgroundColor="{AppThemeBinding Light={StaticResource White},
+                                                      Dark={StaticResource DeepGray}}"
+                    Stroke="{AppThemeBinding Light={StaticResource Gray300},
+                                             Dark={StaticResource Transparent}}"
+                    StrokeShape="RoundRectangle 7">
+                    <Entry
+                        FontSize="15"
+                        HeightRequest="50"
+                        Placeholder="Enter Item's Image Source"
+                        Text="{Binding ItemImageSource}" />
+                </Border>
+                <Grid ColumnDefinitions="0.5*,0.5*" ColumnSpacing="20">
+                    <Border
+                        Grid.Column="0"
+                        BackgroundColor="{AppThemeBinding Light={StaticResource White},
+                                                          Dark={StaticResource DeepGray}}"
+                        Stroke="{AppThemeBinding Light={StaticResource Gray300},
+                                                 Dark={StaticResource Transparent}}"
+                        StrokeShape="RoundRectangle 7">
+                        <Entry
+                            FontSize="15"
+                            HeightRequest="50"
+                            Placeholder="Enter Item Price"
+                            Text="{Binding ItemPrice}" />
+                    </Border>
+                    <Picker
+                        Title="Select Category"
+                        Grid.Column="1"
+                        BackgroundColor="{AppThemeBinding Light={StaticResource White}}"
+                        SelectedItem="{Binding ItemCategory}"
+                        VerticalOptions="Center">
+                        <Picker.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                                <x:String>Momo</x:String>
+                                <x:String>Noodles</x:String>
+                                <x:String>Burgers And Sandwiches</x:String>
+                                <x:String>Snacks</x:String>
+                                <x:String>Breakfast</x:String>
+                                <x:String>Soft Drinks</x:String>
+                            </x:Array>
+                        </Picker.ItemsSource>
+                    </Picker>
+                </Grid>
+                <Button
+                    Padding="0"
+                    Command="{Binding AddMenuItemCommand}"
+                    FontAttributes="Bold"
+                    FontSize="20"
+                    HeightRequest="50"
+                    Text="Add Menu Item" />
+            </VerticalStackLayout>
+            <Border
+                Margin="5"
+                Padding="5"
+                BackgroundColor="{StaticResource Primary}"
+                HorizontalOptions="Center"
+                IsVisible="{Binding ResponseMessageVisibility}"
+                Stroke="{StaticResource Transparent}"
+                StrokeShape="RoundRectangle 10">
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="12"
+                    Text="{Binding ResponseMessage}"
+                    TextColor="{StaticResource White}" />
+            </Border>
+        </VerticalStackLayout>
+    </Border>
+</ContentPage>
