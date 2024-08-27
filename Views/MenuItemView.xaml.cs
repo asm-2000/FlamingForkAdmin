@@ -1,3 +1,5 @@
+using CommunityToolkit.Mvvm.Input;
+
 namespace FlamingForkAdmin.Views
 {
     public partial class MenuItemView : ContentView
@@ -53,11 +55,11 @@ namespace FlamingForkAdmin.Views
         }
 
         public static readonly BindableProperty DeleteMenuItemCommandProperty =
-            BindableProperty.Create(nameof(DeleteMenuItemCommand), typeof(Command), typeof(MenuItemView));
+            BindableProperty.Create(nameof(DeleteMenuItemCommand), typeof(IAsyncRelayCommand), typeof(MenuItemView));
 
-        public Command DeleteMenuItemCommand
+        public IAsyncRelayCommand DeleteMenuItemCommand
         {
-            get => (Command)GetValue(DeleteMenuItemCommandProperty);
+            get => (IAsyncRelayCommand)GetValue(DeleteMenuItemCommandProperty);
             set => SetValue(DeleteMenuItemCommandProperty, value);
         }
     }

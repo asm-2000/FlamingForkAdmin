@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using FlamingForkAdmin.Models;
 using FlamingForkAdmin.Repositories.Implementations;
 using FlamingForkAdmin.Views;
+using System.Diagnostics;
 
 namespace FlamingForkAdmin.ViewModels
 {
@@ -65,9 +66,15 @@ namespace FlamingForkAdmin.ViewModels
         }
 
         [RelayCommand]
-        public async Task DeleteMenuItem()
+        public async Task DeleteMenuItem(string itemId)
         {
-            return;
+            IsFetching = "True";
+            MenuOperationResponseMessage = await _MenuService.DeleteMenuItem(Convert.ToInt32(itemId));
+            IsFetching = "False";
+            MenuOperationResponseMessageVisibility= "True";
+            await Task.Delay(1000);
+            MenuOperationResponseMessageVisibility = "False";
+            await FetchMenuItems();
         }
 
         [RelayCommand]

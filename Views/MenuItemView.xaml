@@ -50,7 +50,7 @@
                     Margin="20,0,20,10"
                     Padding="0"
                     Command="{Binding DeleteMenuItemCommand}"
-                    CommandParameter="{Binding Source={Reference MenuItemId}}"
+                    CommandParameter="{Binding Source={Reference MenuItemId}, Path=Text}"
                     FontAttributes="Bold"
                     FontSize="20"
                     HeightRequest="40"

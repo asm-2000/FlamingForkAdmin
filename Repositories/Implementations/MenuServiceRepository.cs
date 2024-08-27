@@ -109,7 +109,25 @@ namespace FlamingForkAdmin.Repositories.Implementations
 
         public async Task<string> DeleteMenuItem(int itemId)
         {
-            return string.Empty;
+            ApiResponseMessageModel? errorResponse = new ApiResponseMessageModel();
+            try
+            {
+                // Fetches authentication token from secure storage.
+                string token = await SecureStorageHandler.GetAuthenticationToken();
+                _HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                var uri = new Uri("http://" + _ServerAddress + "/menu/deleteMenuItem/" + Convert.ToString(itemId));
+                var response = await _HttpClient.DeleteAsync(uri);
+
+                // Deserializes response from API.
+                var responseBody = await response.Content.ReadAsStringAsync();
+                errorResponse = JsonSerializer.Deserialize<ApiResponseMessageModel>(responseBody, new JsonSerializerOptions{ PropertyNameCaseInsensitive = true});
+                return errorResponse.Message;
+            }
+            catch(Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
         #endregion MenuItemRemover
