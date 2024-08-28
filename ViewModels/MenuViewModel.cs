@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using FlamingForkAdmin.Models;
 using FlamingForkAdmin.Repositories.Implementations;
 using FlamingForkAdmin.Views;
-using System.Diagnostics;
+using System.Collections.ObjectModel;
 
 namespace FlamingForkAdmin.ViewModels
 {
@@ -12,6 +12,9 @@ namespace FlamingForkAdmin.ViewModels
         #region Properties
         [ObservableProperty]
         private List<MenuItemModel>? _MenuItems;
+
+        [ObservableProperty]
+        private ObservableCollection<MenuItemModel>? _FilteredMenuItems;
 
         [ObservableProperty]
         private string? _IsFetching;
@@ -25,16 +28,49 @@ namespace FlamingForkAdmin.ViewModels
         [ObservableProperty]
         private string _MenuOperationResponseMessageVisibility;
 
+        [ObservableProperty]
+        private string _SearchKey;
+
         private MenuServiceRepository _MenuService;
         private INavigation _Navigation;
         #endregion
 
         public MenuViewModel(INavigation navigation)
         {
+            FilteredMenuItems = new();  
             MenuOperationResponseMessageVisibility = "False";
             _Navigation = navigation;
             _MenuService = new MenuServiceRepository();
             FetchMenuItems();
+        }
+
+        [RelayCommand]
+        public async Task SearchMenuItems()
+        {
+            if(string.IsNullOrEmpty(SearchKey))
+            {
+                foreach(MenuItemModel menuitem in MenuItems)
+                {
+                    FilteredMenuItems.Add(menuitem);
+                }
+            }
+            else if (string.IsNullOrWhiteSpace(SearchKey))
+            {
+                return;
+            }
+            else
+            {
+                await Task.Delay(200);
+                FilteredMenuItems.Clear();
+                // Add only matching items
+                foreach (MenuItemModel menuItem in MenuItems)
+                {
+                    if (menuItem.ItemName.Contains(SearchKey, StringComparison.OrdinalIgnoreCase))
+                    {
+                        FilteredMenuItems.Add(menuItem);
+                    }
+                }
+            }
         }
 
         [RelayCommand]
@@ -54,6 +90,10 @@ namespace FlamingForkAdmin.ViewModels
             }
             else
             {
+                foreach(MenuItemModel menuItem in MenuItems)
+                {
+                    FilteredMenuItems.Add(menuItem);
+                }
                 NoMenuItemsPresent = "False";
             }
             IsFetching = "False";
