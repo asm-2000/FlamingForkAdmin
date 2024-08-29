@@ -4,6 +4,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:model="clr-namespace:FlamingForkAdmin.Models"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:view="clr-namespace:FlamingForkAdmin.Views"
     xmlns:viewmodel="clr-namespace:FlamingForkAdmin.ViewModels"
     Title="MenuPage"
@@ -54,6 +55,24 @@
                         HeightRequest="20"
                         Source="back_icon.png"
                         WidthRequest="20" />
+                </Border>
+                <Border
+                    BackgroundColor="{AppThemeBinding Light={StaticResource White},
+                                                      Dark={StaticResource DeepGray}}"
+                    Stroke="{AppThemeBinding Light={StaticResource Gray300},
+                                             Dark={StaticResource Transparent}}"
+                    StrokeShape="RoundRectangle 20"
+                    WidthRequest="700">
+                    <Entry
+                        FontAttributes="Bold"
+                        FontSize="20"
+                        HeightRequest="40"
+                        Placeholder="Search Menu Item"
+                        Text="{Binding SearchKey}">
+                        <Entry.Behaviors>
+                            <toolkit:EventToCommandBehavior Command="{Binding SearchMenuItemsCommand}" EventName="TextChanged" />
+                        </Entry.Behaviors>
+                    </Entry>
                 </Border>
                 <HorizontalStackLayout Spacing="20">
                     <Label
@@ -138,7 +157,7 @@
                                     Text="No Menu Items To show!"
                                     TextColor="{StaticResource Gray300}" />
                             </VerticalStackLayout>
-                            <CollectionView ItemsLayout="VerticalGrid, 4" ItemsSource="{Binding MenuItems}">
+                            <CollectionView ItemsLayout="VerticalGrid, 4" ItemsSource="{Binding FilteredMenuItems}">
                                 <CollectionView.ItemTemplate>
                                     <DataTemplate x:DataType="model:MenuItemModel">
                                         <view:MenuItemView
