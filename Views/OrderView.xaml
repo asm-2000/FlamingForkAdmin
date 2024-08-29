@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="FlamingForkAdmin.Views.OrderView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converter="clr-namespace:FlamingForkAdmin.Helper.Converters"
+    xmlns:model="clr-namespace:FlamingForkAdmin.Models"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:Name="This">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <converter:TupleConverter x:Key="TupleConverter" />
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <VerticalStackLayout Margin="5" BindingContext="{x:Reference This}">
+        <Border
+            Padding="10"
+            BackgroundColor="{AppThemeBinding Light={StaticResource Gray50},
+                                              Dark={StaticResource Black}}"
+            Stroke="{StaticResource Transparent}"
+            StrokeShape="RoundRectangle 10">
+            <VerticalStackLayout>
+                <Label
+                    x:Name="OrderIdLabel"
+                    IsVisible="False"
+                    Text="{Binding OrderId}" />
+                <Border
+                    Padding="10,2"
+                    HorizontalOptions="End"
+                    MaximumWidthRequest="250"
+                    Stroke="{AppThemeBinding Light={StaticResource Gray200},
+                                             Dark={StaticResource Gold}}"
+                    StrokeShape="RoundRectangle 10">
+                    <Label
+                        x:Name="OrderStatusLabel"
+                        FontSize="12"
+                        HorizontalTextAlignment="Center"
+                        MinimumWidthRequest="100"
+                        Text="{Binding OrderStatus, StringFormat='Status: {0}'}"
+                        TextColor="{AppThemeBinding Light={StaticResource Gray600},
+                                                    Dark={StaticResource Gray50}}" />
+                </Border>
+                <Image Margin="20" HeightRequest="80">
+                    <Image.Triggers>
+                        <DataTrigger
+                            Binding="{Binding Source={Reference OrderStatusLabel}, Path=Text}"
+                            TargetType="Image"
+                            Value="Status: Placed">
+                            <Setter Property="Source" Value="order_placed_icon.png" />
+                        </DataTrigger>
+                        <DataTrigger
+                            Binding="{Binding Source={Reference OrderStatusLabel}, Path=Text}"
+                            TargetType="Image"
+                            Value="Status: Cancelled">
+                            <Setter Property="Source" Value="order_cancelled_icon.png" />
+                        </DataTrigger>
+                        <DataTrigger
+                            Binding="{Binding Source={Reference OrderStatusLabel}, Path=Text}"
+                            TargetType="Image"
+                            Value="Status: Being Prepared">
+                            <Setter Property="Source" Value="order_being_prepared_icon.png" />
+                        </DataTrigger>
+                        <DataTrigger
+                            Binding="{Binding Source={Reference OrderStatusLabel}, Path=Text}"
+                            TargetType="Image"
+                            Value="Status: Being Delivered">
+                            <Setter Property="Source" Value="order_being_delivered_icon.png" />
+                        </DataTrigger>
+                        <DataTrigger
+                            Binding="{Binding Source={Reference OrderStatusLabel}, Path=Text}"
+                            TargetType="Image"
+                            Value="Status: Delivered">
+                            <Setter Property="Source" Value="order_delivered_icon.png" />
+                        </DataTrigger>
+                    </Image.Triggers>
+                </Image>
+                <Border
+                    Padding="10,2"
+                    HeightRequest="44"
+                    Stroke="{AppThemeBinding Light={StaticResource Gray200},
+                                             Dark={StaticResource Primary}}"
+                    StrokeShape="RoundRectangle 10">
+                    <Label
+                        FontSize="14"
+                        LineBreakMode="CharacterWrap"
+                        MaxLines="2"
+                        Text="{Binding CustomerAddress}"
+                        TextColor="{AppThemeBinding Light={StaticResource Primary},
+                                                    Dark={StaticResource PrimaryDarkText}}"
+                        VerticalTextAlignment="Center" />
+                </Border>
+                <Label
+                    Padding="10,2"
+                    FontAttributes="Bold"
+                    Text="{Binding OrderDate}"
+                    TextColor="{StaticResource Gray500}" />
+                <Label
+                    Padding="10,2"
+                    FontAttributes="Bold"
+                    Text="{Binding CustomerContact}"
+                    TextColor="{AppThemeBinding Light={StaticResource Primary},
+                                                Dark={StaticResource Gold}}" />
+                <Label
+                    Padding="10,5,10,0"
+                    FontAttributes="Bold"
+                    Text="Items:"
+                    TextColor="{StaticResource Gray500}" />
+                <ScrollView
+                    Padding="10,5"
+                    HeightRequest="50"
+                    Orientation="Vertical"
+                    VerticalScrollBarVisibility="Always">
+                    <CollectionView ItemsSource="{Binding OrderItems}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="model:OrderItemModel">
+                                <HorizontalStackLayout Spacing="10">
+                                    <Label Text="{Binding OrderItemName}" TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray100}}" />
+                                    <Label Text="{Binding Quantity, StringFormat='({0})'}" TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray100}}" />
+                                </HorizontalStackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </ScrollView>
+                <Grid Padding="10" ColumnDefinitions="0.6*,0.4*">
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="14"
+                        HorizontalOptions="Start"
+                        LineBreakMode="CharacterWrap"
+                        MaxLines="2"
+                        Text="{Binding TotalPrice, StringFormat='Total: Rs {0}'}"
+                        TextColor="{AppThemeBinding Light={StaticResource Primary},
+                                                    Dark={StaticResource PrimaryDarkText}}"
+                        VerticalTextAlignment="Center" />
+                    <Picker
+                        x:Name="StatusPicker"
+                        Grid.Column="1"
+                        BackgroundColor="{AppThemeBinding Light={StaticResource White}}"
+                        SelectedItem="{Binding OrderStatus}"
+                        TextColor="{AppThemeBinding Light={StaticResource Gray400},
+                                                    Dark={StaticResource Gray200}}">
+                        <Picker.Behaviors>
+                            <toolkit:EventToCommandBehavior Command="{Binding OrderStatusChangedCommand}" EventName="SelectedIndexChanged">
+                                <toolkit:EventToCommandBehavior.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource TupleConverter}">
+                                        <Binding Path="OrderId" />
+                                        <Binding Path="SelectedItem" Source="{x:Reference StatusPicker}" />
+                                    </MultiBinding>
+                                </toolkit:EventToCommandBehavior.CommandParameter>
+                            </toolkit:EventToCommandBehavior>
+                        </Picker.Behaviors>
+                        <Picker.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                                <x:String>Placed</x:String>
+                                <x:String>Being Prepared</x:String>
+                                <x:String>Being Delivered</x:String>
+                                <x:String>Delivered</x:String>
+                                <x:String>Cancelled</x:String>
+                            </x:Array>
+                        </Picker.ItemsSource>
+                    </Picker>
+                </Grid>
+                <ProgressBar ProgressColor="{StaticResource ProgressGreen}">
+                    <ProgressBar.Triggers>
+                        <DataTrigger
+                            Binding="{Binding Source={Reference OrderStatusLabel}, Path=Text}"
+                            TargetType="ProgressBar"
+                            Value="Status: Placed">
+                            <Setter Property="Progress" Value="0.25" />
+                        </DataTrigger>
+                        <DataTrigger
+                            Binding="{Binding Source={Reference OrderStatusLabel}, Path=Text}"
+                            TargetType="ProgressBar"
+                            Value="Status: Being Prepared">
+                            <Setter Property="Progress" Value="0.5" />
+                        </DataTrigger>
+                        <DataTrigger
+                            Binding="{Binding Source={Reference OrderStatusLabel}, Path=Text}"
+                            TargetType="ProgressBar"
+                            Value="Status: Being Delivered">
+                            <Setter Property="Progress" Value="0.75" />
+                        </DataTrigger>
+                        <DataTrigger
+                            Binding="{Binding Source={Reference OrderStatusLabel}, Path=Text}"
+                            TargetType="ProgressBar"
+                            Value="Status: Delivered">
+                            <Setter Property="Progress" Value="1" />
+                        </DataTrigger>
+                        <DataTrigger
+                            Binding="{Binding Source={Reference OrderStatusLabel}, Path=Text}"
+                            TargetType="ProgressBar"
+                            Value="Status: Cancelled">
+                            <Setter Property="Progress" Value="1" />
+                            <Setter Property="ProgressColor" Value="{StaticResource PrimaryDark}" />
+                        </DataTrigger>
+                    </ProgressBar.Triggers>
+                </ProgressBar>
+            </VerticalStackLayout>
+        </Border>
+    </VerticalStackLayout>
+</ContentView>

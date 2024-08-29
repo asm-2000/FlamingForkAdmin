@@ -2,8 +2,233 @@
 <ContentPage
     x:Class="FlamingForkAdmin.MainPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:model="clr-namespace:FlamingForkAdmin.Models"
+    xmlns:view="clr-namespace:FlamingForkAdmin.Views"
+    xmlns:viewmodel="clr-namespace:FlamingForkAdmin.ViewModels"
+    x:DataType="viewmodel:MainViewModel"
+    Shell.NavBarIsVisible="False">
     <ScrollView>
-        <VerticalStackLayout Padding="30,0" Spacing="25" />
+        <VerticalStackLayout Padding="100,50">
+            <Border
+                Margin="5,5"
+                Padding="5"
+                BackgroundColor="{StaticResource Primary}"
+                HorizontalOptions="Center"
+                IsVisible="{Binding StatusChangeMessageVisibility}"
+                Stroke="{StaticResource Transparent}"
+                StrokeShape="RoundRectangle 10">
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="12"
+                    Text="{Binding StatusChangeResponseMessage}"
+                    TextColor="{StaticResource White}" />
+            </Border>
+            <ActivityIndicator
+                HeightRequest="30"
+                IsRunning="{Binding IsFetching}"
+                IsVisible="{Binding IsFetching}"
+                WidthRequest="30"
+                Color="{StaticResource Gray100}" />
+            <!--#region Title Box-->
+            <FlexLayout
+                Margin="0,0,0,20"
+                Direction="Row"
+                FlowDirection="LeftToRight"
+                JustifyContent="SpaceBetween">
+                <HorizontalStackLayout Spacing="20">
+                    <Image
+                        HeightRequest="60"
+                        Source="sign_in.png"
+                        WidthRequest="60" />
+                    <Label
+                        FontAttributes="Bold"
+                        FontFamily="PoppinsRegular"
+                        FontSize="30"
+                        Text="Flamin' Fork"
+                        VerticalOptions="Center" />
+                </HorizontalStackLayout>
+                <HorizontalStackLayout Spacing="10">
+                    <Border
+                        Margin="2"
+                        Padding="10"
+                        BackgroundColor="{AppThemeBinding Light={StaticResource Transparent},
+                                                          Dark={StaticResource DeepGray}}"
+                        HeightRequest="70"
+                        HorizontalOptions="End"
+                        Stroke="{AppThemeBinding Light={StaticResource Gray500},
+                                                 Dark={StaticResource Transparent}}"
+                        StrokeShape="RoundRectangle 20"
+                        WidthRequest="80">
+                        <ImageButton
+                            BackgroundColor="{StaticResource Transparent}"
+                            Command="{Binding RefreshAllOrdersCommand}"
+                            HeightRequest="20"
+                            Source="refresh_icon.png"
+                            WidthRequest="20" />
+                    </Border>
+                    <Border
+                        Margin="2"
+                        Padding="10"
+                        BackgroundColor="{AppThemeBinding Light={StaticResource Transparent},
+                                                          Dark={StaticResource DeepGray}}"
+                        HeightRequest="70"
+                        HorizontalOptions="End"
+                        Stroke="{AppThemeBinding Light={StaticResource Gray500},
+                                                 Dark={StaticResource Transparent}}"
+                        StrokeShape="RoundRectangle 20"
+                        WidthRequest="80">
+                        <ImageButton
+                            BackgroundColor="{StaticResource Transparent}"
+                            Command="{Binding ToggleDisplayModeCommand}"
+                            HeightRequest="20"
+                            Source="{Binding DisplayModeButtonSource}"
+                            WidthRequest="20" />
+                    </Border>
+                </HorizontalStackLayout>
+            </FlexLayout>
+            <BoxView
+                Margin="0,0,0,40"
+                BackgroundColor="{AppThemeBinding Light={StaticResource PrimaryDark},
+                                                  Dark={StaticResource Gold}}"
+                HeightRequest="2" />
+            <!--#endregion-->
+            <!--#region MainPage Body-->
+            <Grid ColumnDefinitions="0.3*,0.7*" ColumnSpacing="50">
+                <!--#region Navigator-->
+                <Border
+                    Grid.Column="0"
+                    Padding="50,30"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource Transparent},
+                                                      Dark={StaticResource DeepGray}}"
+                    Stroke="{AppThemeBinding Light={StaticResource Gray100},
+                                             Dark={StaticResource Transparent}}"
+                    StrokeShape="RoundRectangle 20">
+
+                    <VerticalStackLayout Spacing="10">
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="34"
+                            HorizontalTextAlignment="Start"
+                            Text="Navigate"
+                            TextColor="{AppThemeBinding Light={StaticResource Primary},
+                                                        Dark={StaticResource PrimaryDarkText}}" />
+                        <Label
+                            Margin="20,0"
+                            FontAttributes="Bold"
+                            FontSize="24"
+                            Text="Orders:"
+                            TextColor="{AppThemeBinding Light={StaticResource Gray500},
+                                                        Dark={StaticResource Gray400}}" />
+                        <VerticalStackLayout Margin="20,0" Spacing="20">
+                            <view:NavigationButtonView
+                                ImageSource="order_logo.png"
+                                NavigateButtonPressed="{Binding NavigateToReceivedOrdersPageCommand}"
+                                OrderType="Received" />
+                            <view:NavigationButtonView
+                                ImageSource="order_being_prepared_icon.png"
+                                NavigateButtonPressed="{Binding NavigateToBeingPreparedOrdersPageCommand}"
+                                OrderType="Being Prepared" />
+                            <view:NavigationButtonView
+                                ImageSource="order_being_delivered_icon.png"
+                                NavigateButtonPressed="{Binding NavigateToBeingDeliveredOrdersPageCommand}"
+                                OrderType="Being Delivered" />
+                            <view:NavigationButtonView
+                                ImageSource="order_delivered_icon.png"
+                                NavigateButtonPressed="{Binding NavigateToDeliveredOrdersPageCommand}"
+                                OrderType="Delivered" />
+                            <view:NavigationButtonView
+                                ImageSource="order_cancelled_icon.png"
+                                NavigateButtonPressed="{Binding NavigateToCancelledOrdersPageCommand}"
+                                OrderType="Cancelled" />
+                        </VerticalStackLayout>
+                        <Label
+                            Margin="20,0"
+                            FontAttributes="Bold"
+                            FontSize="24"
+                            Text="Menu:"
+                            TextColor="{AppThemeBinding Light={StaticResource Gray500},
+                                                        Dark={StaticResource Gray400}}" />
+                        <view:NavigationButtonView
+                            Margin="20,0"
+                            ImageSource="menu_icon.png"
+                            NavigateButtonPressed="{Binding NavigateToMenuPageCommand}"
+                            OrderType="My Menu" />
+                        <!--#region LogOutButton-->
+                        <Border
+                            Margin="20,20,30,0"
+                            Padding="5"
+                            BackgroundColor="{AppThemeBinding Light={StaticResource Primary},
+                                                              Dark={StaticResource PrimaryDark}}"
+                            HeightRequest="50"
+                            Stroke="{StaticResource Transparent}"
+                            StrokeShape="RoundRectangle 10">
+                            <HorizontalStackLayout
+                                HorizontalOptions="Center"
+                                Spacing="20"
+                                VerticalOptions="Center">
+                                <HorizontalStackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding LogOutAdminCommand}" />
+                                </HorizontalStackLayout.GestureRecognizers>
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="20"
+                                    Text="Log Out"
+                                    TextColor="{StaticResource White}"
+                                    VerticalTextAlignment="Center" />
+                                <Image
+                                    HeightRequest="30"
+                                    Source="log_out.png"
+                                    WidthRequest="30" />
+                            </HorizontalStackLayout>
+                        </Border>
+                        <!--#endregion-->
+                    </VerticalStackLayout>
+                </Border>
+                <!--#endregion-->
+                <!--#region All Orders-->
+                <Border
+                    Grid.Column="1"
+                    Padding="30"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource Transparent},
+                                                      Dark={StaticResource DeepGray}}"
+                    Stroke="{AppThemeBinding Light={StaticResource Gray100},
+                                             Dark={StaticResource Transparent}}"
+                    StrokeShape="RoundRectangle 20">
+                    <ScrollView HeightRequest="684" Orientation="Vertical">
+                        <VerticalStackLayout>
+                            <VerticalStackLayout
+                                Margin="0,180"
+                                HorizontalOptions="Center"
+                                IsVisible="{Binding NoOrdersPresent}"
+                                Spacing="30">
+                                <Image HeightRequest="200" Source="no_orders_icon.png" />
+                                <Label
+                                    FontSize="35"
+                                    Text="No Orders To show!"
+                                    TextColor="{StaticResource Gray300}" />
+                            </VerticalStackLayout>
+                            <CollectionView ItemsLayout="VerticalGrid, 2" ItemsSource="{Binding AllOrders}">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="model:OrderModel">
+                                        <view:OrderView
+                                            CustomerAddress="{Binding CustomerAddress}"
+                                            CustomerContact="{Binding CustomerContact}"
+                                            OrderDate="{Binding OrderDate}"
+                                            OrderId="{Binding OrderId}"
+                                            OrderItems="{Binding OrderItems}"
+                                            OrderStatus="{Binding OrderStatus}"
+                                            OrderStatusChangedCommand="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=ChangeOrderStatusCommand}"
+                                            TotalPrice="{Binding TotalPrice}" />
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </VerticalStackLayout>
+                    </ScrollView>
+                </Border>
+                <!--#endregion-->
+            </Grid>
+            <!--#endregion-->
+        </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

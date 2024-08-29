@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="FlamingForkAdmin.Views.MenuItemView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:model="clr-namespace:FlamingForkAdmin.Models"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:Name="This">
+    <VerticalStackLayout Margin="0,20" BindingContext="{x:Reference This}">
+        <Border
+            BackgroundColor="{AppThemeBinding Light={StaticResource Gray50},
+                                              Dark={StaticResource Black}}"
+            Stroke="{StaticResource Transparent}"
+            StrokeShape="RoundRectangle 20"
+            WidthRequest="310">
+            <VerticalStackLayout Spacing="20">
+                <Image
+                    Aspect="AspectFill"
+                    HeightRequest="300"
+                    WidthRequest="310">
+                    <Image.Source>
+                        <UriImageSource CachingEnabled="False" Uri="{Binding ItemImageSource}" />
+                    </Image.Source>
+                </Image>
+                <VerticalStackLayout Padding="20,0" Spacing="10">
+                    <Label
+                        x:Name="MenuItemId"
+                        IsVisible="False"
+                        Text="{Binding ItemId}" />
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="22"
+                        MaxLines="2"
+                        Text="{Binding ItemName}"
+                        TextColor="{AppThemeBinding Light={StaticResource Primary},
+                                                    Dark={StaticResource PrimaryDarkText}}" />
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="18"
+                        MaxLines="2"
+                        Text="{Binding ItemCategory, StringFormat='( {0} )'}"
+                        TextColor="{AppThemeBinding Light={StaticResource Gray500},
+                                                    Dark={StaticResource Gray300}}" />
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="18"
+                        MaxLines="2"
+                        Text="{Binding ItemPrice, StringFormat='Price: Rs {0}'}"
+                        TextColor="{AppThemeBinding Light={StaticResource Primary},
+                                                    Dark={StaticResource Gold}}" />
+                </VerticalStackLayout>
+                <Grid
+                    Margin="20,0,20,10"
+                    ColumnDefinitions="0.5*,0.5*"
+                    ColumnSpacing="10">
+                    <Button
+                        Grid.Column="0"
+                        Padding="0"
+                        BackgroundColor="{StaticResource DeepGray}"
+                        Command="{Binding UpdateMenuItemCommand}"
+                        CommandParameter="{Binding Source={Reference MenuItemId}, Path=Text}"
+                        FontAttributes="Bold"
+                        FontSize="18"
+                        HeightRequest="40"
+                        Text="Update Item" />
+                    <Button
+                        Grid.Column="1"
+                        Padding="0"
+                        Command="{Binding DeleteMenuItemCommand}"
+                        CommandParameter="{Binding Source={Reference MenuItemId}, Path=Text}"
+                        FontAttributes="Bold"
+                        FontSize="18"
+                        HeightRequest="40"
+                        Text="Delete Item" />
+                </Grid>
+            </VerticalStackLayout>
+        </Border>
+    </VerticalStackLayout>
+</ContentView>
